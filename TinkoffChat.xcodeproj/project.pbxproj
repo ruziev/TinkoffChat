@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		992157A31F76606E00142F5F /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 992157A21F76606E00142F5F /* Media.xcassets */; };
+		996A108A1F7E996700EBDFD7 /* UIImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996A10891F7E996700EBDFD7 /* UIImagePickerController.swift */; };
 		99C76C431F741F1500E61DAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C76C421F741F1500E61DAB /* AppDelegate.swift */; };
 		99C76C451F741F1500E61DAB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C76C441F741F1500E61DAB /* ProfileViewController.swift */; };
 		99C76C481F741F1500E61DAB /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99C76C461F741F1500E61DAB /* Profile.storyboard */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		992157A21F76606E00142F5F /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		996A10891F7E996700EBDFD7 /* UIImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImagePickerController.swift; sourceTree = "<group>"; };
 		99C76C3F1F741F1500E61DAB /* TinkoffChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinkoffChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C76C421F741F1500E61DAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		99C76C441F741F1500E61DAB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				99C76C421F741F1500E61DAB /* AppDelegate.swift */,
 				99C76C441F741F1500E61DAB /* ProfileViewController.swift */,
+				996A10891F7E996700EBDFD7 /* UIImagePickerController.swift */,
 				99C76C461F741F1500E61DAB /* Profile.storyboard */,
 				992157A21F76606E00142F5F /* Media.xcassets */,
 				99C76C491F741F1500E61DAB /* Assets.xcassets */,
@@ -142,6 +145,7 @@
 			files = (
 				99C76C451F741F1500E61DAB /* ProfileViewController.swift in Sources */,
 				99C76C431F741F1500E61DAB /* AppDelegate.swift in Sources */,
+				996A108A1F7E996700EBDFD7 /* UIImagePickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
