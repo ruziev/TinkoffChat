@@ -14,3 +14,19 @@ protocol ConversationCellConfiguration {
     var online: Bool {get set}
     var hasUnreadMessages: Bool {get set}
 }
+
+class ConversationListCellData: ConversationCellConfiguration {
+    var name: String?
+    var message: String?
+    var date: Date?
+    var online: Bool
+    var hasUnreadMessages: Bool
+    
+    init(name: String, message: String?, date: Date, online: Bool = false, hasUnreadMessages: Bool = false) {
+        self.name = name
+        self.message = message
+        self.date = date
+        self.online = online
+        self.hasUnreadMessages = hasUnreadMessages
+    }
+}

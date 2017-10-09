@@ -52,7 +52,7 @@ class ConversationsListViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "fromConversationsListToConversation" {
             let destinationVC = segue.destination as! ConversationViewController
-            destinationVC.senderConversationCell = sender as! ConversationListCell
+            destinationVC.senderCellConfiguration = sender as! ConversationCellConfiguration
         }
     }
 
@@ -74,11 +74,8 @@ extension ConversationsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data = conversationsList[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationsListCell", for: indexPath) as! ConversationListCell
-        cell.name = data.0
-        cell.message = data.1
-        cell.date = data.2
-        cell.online = data.3
-        cell.hasUnreadMessages = data.4
+        let cellData = ConversationListCellData(name: data.0, message: data.1, date: data.2, online: data.3, hasUnreadMessages: data.4)
+        cell.data = cellData
         cell.prepare()
         cell.layoutIfNeeded()
         return cell
@@ -88,7 +85,7 @@ extension ConversationsListViewController: UITableViewDataSource {
 extension ConversationsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ConversationListCell
-        performSegue(withIdentifier: "fromConversationsListToConversation", sender: cell)
+        performSegue(withIdentifier: "fromConversationsListToConversation", sender: cell.data)
         cell.isSelected = false
     }
 }

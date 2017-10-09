@@ -9,7 +9,7 @@
 import UIKit
 
 class ConversationViewController: UIViewController {
-    var senderConversationCell: ConversationListCell!
+    var senderCellConfiguration: ConversationCellConfiguration!
     @IBOutlet weak var messagesTableView: UITableView!
     
     var messages: [(MessageType, String)] = []
@@ -39,7 +39,7 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = senderConversationCell.name
+        self.title = senderCellConfiguration.name
         messagesTableView.dataSource = self
         messagesTableView.delegate = self
         messagesTableView.rowHeight = UITableViewAutomaticDimension
@@ -70,7 +70,9 @@ extension ConversationViewController: UITableViewDataSource {
             cell = tableView.dequeueReusableCell(withIdentifier: "outgoingMessageCell", for: indexPath) as! MessageCell
             cell.type = .outgoing
         }
-        cell.messageText = messages[indexPath.row].1
+        let cellData = MessageCellData()
+        cellData.messageText = messages[indexPath.row].1
+        cell.data = cellData
         cell.prepareData()
         return cell
     }

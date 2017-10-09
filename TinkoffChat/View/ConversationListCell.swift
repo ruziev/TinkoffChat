@@ -8,28 +8,24 @@
 
 import UIKit
 
-class ConversationListCell: UITableViewCell, ConversationCellConfiguration {
-    var name: String?
-    var message: String?
-    var date: Date?
-    var online: Bool = false
-    var hasUnreadMessages: Bool = false
+class ConversationListCell: UITableViewCell {
+    var data: ConversationCellConfiguration!
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     
     func prepare() {
-        nameLabel.text = name!
-        if let message = message {
+        nameLabel.text = data.name!
+        if let message = data.message {
             messageLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .regular)
             messageLabel.text = message
         } else {
-            messageLabel.font = UIFont(name: "Courier", size: messageLabel.font.pointSize)
+            messageLabel.font = UIFont(name: "Courier", size: 14.0)
             messageLabel.text = "No messages yet"
-            // FIX IT
+            // why font change won't apply ?
         }
-        if let date = date {
+        if let date = data.date {
             if date.timeIntervalSinceNow > -3600*24.0 {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm"
@@ -42,13 +38,13 @@ class ConversationListCell: UITableViewCell, ConversationCellConfiguration {
         } else {
             dateLabel.text = "A long time ago"
         }
-        if online {
+        if data.online {
             self.backgroundColor = UIColor(rgb: 0xf1c40f, alpha: 0.2)
             
         } else {
             self.backgroundColor = UIColor.white
         }
-        if hasUnreadMessages {
+        if data.hasUnreadMessages {
             messageLabel.font = UIFont.boldSystemFont(ofSize: messageLabel.font.pointSize)
             messageLabel.textColor = UIColor(white: 0, alpha: 0.9)
         } else {

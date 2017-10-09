@@ -11,3 +11,7 @@ import Foundation
 protocol MessageCellConfiguration {
     var messageText: String? {get set}
 }
+
+class MessageCellData: MessageCellConfiguration {
+    var messageText: String? 
+}

@@ -13,15 +13,15 @@ enum MessageType {
     case outgoing
 }
 
-class MessageCell: UITableViewCell, MessageCellConfiguration {
+class MessageCell: UITableViewCell {
+    var data: MessageCellConfiguration!
     var type: MessageType!
-    var messageText: String?
     
     @IBOutlet weak var wrapperView: UIView!
     @IBOutlet weak var label: UILabel!
     
     func prepareData() {
-        label.text = messageText!
+        label.text = data.messageText
     }
     
     func prepareForShow() {
