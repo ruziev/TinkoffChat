@@ -157,7 +157,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZMB-g7-q6p">
-                                                    <rect key="frame" x="16" y="8" width="58" height="114"/>
+                                                    <rect key="frame" x="16" y="8" width="62" height="114"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsg-8c-xh3">
                                                             <rect key="frame" x="8" y="8" width="42" height="98"/>
@@ -171,7 +171,7 @@
                                                         <constraint firstItem="jsg-8c-xh3" firstAttribute="top" secondItem="ZMB-g7-q6p" secondAttribute="top" constant="8" id="1mn-Lr-FXn"/>
                                                         <constraint firstItem="jsg-8c-xh3" firstAttribute="leading" secondItem="ZMB-g7-q6p" secondAttribute="leading" constant="8" id="B9H-No-3Tb"/>
                                                         <constraint firstAttribute="bottom" secondItem="jsg-8c-xh3" secondAttribute="bottom" constant="8" id="YbT-8V-WQa"/>
-                                                        <constraint firstAttribute="trailing" secondItem="jsg-8c-xh3" secondAttribute="trailing" constant="8" id="g6E-VQ-Fs8"/>
+                                                        <constraint firstAttribute="trailing" secondItem="jsg-8c-xh3" secondAttribute="trailing" constant="12" id="g6E-VQ-Fs8"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -195,10 +195,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ykI-2V-95X">
-                                                    <rect key="frame" x="301" y="8" width="58" height="142"/>
+                                                    <rect key="frame" x="297" y="8" width="62" height="142"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEP-1q-G0B">
-                                                            <rect key="frame" x="8" y="8" width="42" height="126"/>
+                                                            <rect key="frame" x="12" y="8" width="42" height="126"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -207,7 +207,7 @@
                                                     <color key="backgroundColor" red="0.53725490196078429" green="0.44313725490196076" blue="1" alpha="0.25" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="hEP-1q-G0B" secondAttribute="bottom" constant="8" id="OR3-KU-1Wi"/>
-                                                        <constraint firstItem="hEP-1q-G0B" firstAttribute="leading" secondItem="ykI-2V-95X" secondAttribute="leading" constant="8" id="guh-DK-TDB"/>
+                                                        <constraint firstItem="hEP-1q-G0B" firstAttribute="leading" secondItem="ykI-2V-95X" secondAttribute="leading" constant="12" id="guh-DK-TDB"/>
                                                         <constraint firstItem="hEP-1q-G0B" firstAttribute="top" secondItem="ykI-2V-95X" secondAttribute="top" constant="8" id="mjB-Ti-Y4p"/>
                                                         <constraint firstAttribute="trailing" secondItem="hEP-1q-G0B" secondAttribute="trailing" constant="8" id="pbQ-r1-a1q"/>
                                                     </constraints>

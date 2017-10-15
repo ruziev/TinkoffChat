@@ -18,11 +18,11 @@ class ConversationsListViewController: UIViewController {
             ("Johny from Winterfold really annoying dude that comes with stupid offers everyday", "No apologies", Date.init(timeIntervalSinceNow: -360000), true, false),
             ("Alice in Wonderland", "😂😂😂😂", Date.init(timeIntervalSinceNow: -9834), false, false),
             ("VR🙏🏻CO", "LMAO", Date.init(timeIntervalSinceNow: -15000), true, false),
-            ("Mike", nil, Date.init(timeIntervalSinceNow: -8888), true, false),
-            ("Boss", nil, Date.init(timeIntervalSinceNow: -12000), false, false),
-            ("Candid Towel", nil, Date.init(timeIntervalSinceNow: -99000), false, false),
-            ("Anastasia", nil, Date.init(timeIntervalSinceNow: -983983), false, false),
-            ("Maria", nil, Date.init(timeIntervalSinceNow: -727638), false, false),
+            ("Mike", nil, nil, true, false),
+            ("Boss", nil, nil, false, false),
+            ("Candid Towel", nil, nil, false, false),
+            ("Anastasia", nil, nil, false, false),
+            ("Maria", nil, nil, false, false),
         ],
         [
             ("Joni", "Yo", Date.init(timeIntervalSinceNow: -748248), false, true),
@@ -52,7 +52,7 @@ class ConversationsListViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "fromConversationsListToConversation" {
             let destinationVC = segue.destination as! ConversationViewController
-            destinationVC.senderCellConfiguration = sender as! ConversationCellConfiguration
+            destinationVC.senderCellData = sender as! ConversationListCellData
         }
     }
 
@@ -75,17 +75,17 @@ extension ConversationsListViewController: UITableViewDataSource {
         let data = conversationsList[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationsListCell", for: indexPath) as! ConversationListCell
         let cellData = ConversationListCellData(name: data.0, message: data.1, date: data.2, online: data.3, hasUnreadMessages: data.4)
-        cell.data = cellData
-        cell.prepare()
-        cell.layoutIfNeeded()
+        cellData.prepareCell(cell: cell)
         return cell
     }
 }
 
 extension ConversationsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! ConversationListCell
-        performSegue(withIdentifier: "fromConversationsListToConversation", sender: cell.data)
-        cell.isSelected = false
+        let data = conversationsList[indexPath.section][indexPath.row]
+        let cellData = ConversationListCellData(name: data.0, message: data.1, date: data.2, online: data.3, hasUnreadMessages: data.4)
+        performSegue(withIdentifier: "fromConversationsListToConversation", sender: cellData)
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        selectedCell?.isSelected = false
     }
 }

@@ -14,31 +14,14 @@ enum MessageType {
 }
 
 class MessageCell: UITableViewCell {
-    var data: MessageCellConfiguration!
-    var type: MessageType!
-    
     @IBOutlet weak var wrapperView: UIView!
     @IBOutlet weak var label: UILabel!
-    
-    func prepareData() {
-        label.text = data.messageText
-    }
-    
-    func prepareForShow() {
-        switch type {
-        case .incoming:
-            layoutIncoming()
-        case .outgoing:
-            layoutOutgoing()
-        default: break
-        }
-    }
     
     func layoutIncoming() {
         let rectShape = CAShapeLayer()
         rectShape.bounds = wrapperView.frame
         rectShape.position = wrapperView.center
-        rectShape.path = UIBezierPath(roundedRect: wrapperView.bounds, byRoundingCorners: [.bottomRight , .topLeft, .topRight], cornerRadii: CGSize(width: 20, height: 20)).cgPath
+        rectShape.path = UIBezierPath(roundedRect: wrapperView.bounds, byRoundingCorners: [.bottomRight , .topLeft, .topRight], cornerRadii: CGSize(width: 16, height: 16)).cgPath
         
         wrapperView.layer.mask = rectShape
     }
@@ -47,7 +30,7 @@ class MessageCell: UITableViewCell {
         let rectShape = CAShapeLayer()
         rectShape.bounds = wrapperView.frame
         rectShape.position = wrapperView.center
-        rectShape.path = UIBezierPath(roundedRect: wrapperView.bounds, byRoundingCorners: [.bottomLeft , .topLeft, .topRight], cornerRadii: CGSize(width: 20, height: 20)).cgPath
+        rectShape.path = UIBezierPath(roundedRect: wrapperView.bounds, byRoundingCorners: [.bottomLeft , .topLeft, .topRight], cornerRadii: CGSize(width: 16, height: 16)).cgPath
         
         wrapperView.layer.mask = rectShape
     }

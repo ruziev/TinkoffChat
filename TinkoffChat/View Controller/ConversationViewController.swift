@@ -9,14 +9,14 @@
 import UIKit
 
 class ConversationViewController: UIViewController {
-    var senderCellConfiguration: ConversationCellConfiguration!
+    var senderCellData: ConversationListCellData!
     @IBOutlet weak var messagesTableView: UITableView!
     
-    var messages: [(MessageType, String)] = []
+    var messages: [(MessageType, MessageCellData)] = []
     
     func generateRandomMessages() {
         func randomString(length: Int) -> String {
-            let letters : NSString = "abcdefghijklmnopqrstuvwxyz          "
+            let letters : NSString = "abcdefghijklmnopqrstuvwxyz      "
             let len = UInt32(letters.length)
             var string = ""
             for _ in 0 ..< length {
@@ -28,10 +28,12 @@ class ConversationViewController: UIViewController {
         }
         
         for messageLength in [1,30,300,30,60,50] {
-            messages.append((.incoming, randomString(length: messageLength)))
+            messages.append((.incoming,
+                             MessageCellData(messageText: randomString(length: messageLength))))
         }
         for messageLength in [1,30,300,30,60,50] {
-            messages.append((.outgoing, randomString(length: messageLength)))
+            messages.append((.outgoing,
+                             MessageCellData(messageText: randomString(length: messageLength))))
         }
         messages.shuffle()
     }
@@ -39,7 +41,7 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = senderCellConfiguration.name
+        self.title = senderCellData.name
         messagesTableView.dataSource = self
         messagesTableView.delegate = self
         messagesTableView.rowHeight = UITableViewAutomaticDimension
@@ -65,15 +67,11 @@ extension ConversationViewController: UITableViewDataSource {
         switch message.0 {
         case .incoming:
             cell = tableView.dequeueReusableCell(withIdentifier: "incomingMessageCell", for: indexPath) as! MessageCell
-            cell.type = .incoming
+            message.1.prepareCell(cell: cell)
         case .outgoing:
             cell = tableView.dequeueReusableCell(withIdentifier: "outgoingMessageCell", for: indexPath) as! MessageCell
-            cell.type = .outgoing
+            message.1.prepareCell(cell: cell)
         }
-        let cellData = MessageCellData()
-        cellData.messageText = messages[indexPath.row].1
-        cell.data = cellData
-        cell.prepareData()
         return cell
     }
 }
@@ -81,7 +79,8 @@ extension ConversationViewController: UITableViewDataSource {
 extension ConversationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let messageCell = cell as! MessageCell
+        let data = messages[indexPath.row]
         messageCell.layoutIfNeeded()
-        messageCell.prepareForShow()
+        data.1.layoutCell(cell: messageCell, type: data.0)
     }
 }
