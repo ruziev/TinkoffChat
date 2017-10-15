@@ -14,4 +14,4 @@ protocol DataManagerProtocol {
 
 let DataManagerDidSaveNotificationName = Notification.Name("com.ruziev.DataManagerDidSaveNotificationName")
 let DataManagerDidRestoreNotificationName = Notification.Name("com.ruziev.DataManagerDidRestoreNotificationName")
-let DataManagerDumpFileName = "profile"
+let DataManagerDumpFileName = "profile_data"

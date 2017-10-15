@@ -69,6 +69,9 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8mH-P7-eNd">
+                                                <rect key="frame" x="177" y="70" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="SCx-Xc-wQG" secondAttribute="trailing" constant="16" id="11J-LC-o0U"/>
@@ -77,6 +80,8 @@
                                             <constraint firstItem="SCx-Xc-wQG" firstAttribute="leading" secondItem="L1G-Ky-eMi" secondAttribute="leading" constant="16" id="KEN-ZN-l7p"/>
                                             <constraint firstAttribute="trailing" secondItem="S2x-GE-koK" secondAttribute="trailing" constant="16" id="KtE-8P-mHG"/>
                                             <constraint firstItem="S2x-GE-koK" firstAttribute="leading" secondItem="L1G-Ky-eMi" secondAttribute="leading" constant="16" id="QbP-HX-caw"/>
+                                            <constraint firstItem="8mH-P7-eNd" firstAttribute="centerX" secondItem="L1G-Ky-eMi" secondAttribute="centerX" id="T4I-p6-F7n"/>
+                                            <constraint firstItem="8mH-P7-eNd" firstAttribute="centerY" secondItem="L1G-Ky-eMi" secondAttribute="centerY" id="Unc-JZ-eN7"/>
                                             <constraint firstItem="SCx-Xc-wQG" firstAttribute="top" secondItem="L1G-Ky-eMi" secondAttribute="top" constant="8" id="sJ1-uH-iXk"/>
                                         </constraints>
                                     </view>
@@ -141,6 +146,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="8mH-P7-eNd" id="oyx-Bg-RXk"/>
                         <outlet property="bottomView" destination="DtY-kw-HKD" id="YOE-7i-na9"/>
                         <outlet property="descriptionTextView" destination="S2x-GE-koK" id="XrL-h6-jEK"/>
                         <outlet property="gcdButton" destination="Hlh-d7-lA4" id="3Ko-8f-Fl9"/>
