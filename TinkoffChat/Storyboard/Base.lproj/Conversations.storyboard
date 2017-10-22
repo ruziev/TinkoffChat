@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,7 +13,7 @@
         <!--Tinkoff Chat-->
         <scene sceneID="9Gb-BU-q6I">
             <objects>
-                <viewController id="hXK-PJ-aun" customClass="ConversationsListViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="hXK-PJ-aun" customClass="ConversationsVC" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aLs-WR-avq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -137,16 +137,16 @@
             </objects>
             <point key="canvasLocation" x="1733" y="-268"/>
         </scene>
-        <!--Conversation View Controller-->
+        <!--ConversationVC-->
         <scene sceneID="S8m-Bi-IWU">
             <objects>
-                <viewController id="be9-PM-am3" customClass="ConversationViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="be9-PM-am3" customClass="ConversationVC" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0cg-Tp-5xt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="300" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OPf-UJ-ygH">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="534"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="incomingMessageCell" rowHeight="130" id="pvv-z3-Z3g" customClass="MessageCell" customModule="TinkoffChat" customModuleProvider="target">
@@ -227,18 +227,67 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fJr-bT-Oqg">
+                                <rect key="frame" x="8" y="551" width="359" height="44"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXa-3h-k31" customClass="RoundedTextView" customModule="TinkoffChat" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="315" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="4if-wN-VL7"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5Z-jR-gpN">
+                                        <rect key="frame" x="323" y="0.0" width="36" height="44"/>
+                                        <state key="normal" title="Send"/>
+                                        <connections>
+                                            <action selector="onSendButtonTap:" destination="be9-PM-am3" eventType="touchUpInside" id="mKZ-A6-Bw0"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgc-SJ-SHQ" userLabel="Separator">
+                                <rect key="frame" x="0.0" y="542" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.031706059644670104" green="0.031706059644670104" blue="0.031706059644670104" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="8l5-wl-Ef0"/>
+                                </constraints>
+                            </view>
                         </subviews>
+                        <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="ecy-28-2Sm" firstAttribute="trailing" secondItem="fJr-bT-Oqg" secondAttribute="trailing" constant="8" id="A0o-PD-Ffk"/>
                             <constraint firstItem="OPf-UJ-ygH" firstAttribute="top" secondItem="ecy-28-2Sm" secondAttribute="top" id="BQ3-Xd-kpR"/>
-                            <constraint firstItem="ecy-28-2Sm" firstAttribute="bottom" secondItem="OPf-UJ-ygH" secondAttribute="bottom" id="Gvt-JD-sQU"/>
+                            <constraint firstItem="ecy-28-2Sm" firstAttribute="trailing" secondItem="qgc-SJ-SHQ" secondAttribute="trailing" id="F1j-eK-Oug"/>
                             <constraint firstItem="OPf-UJ-ygH" firstAttribute="leading" secondItem="ecy-28-2Sm" secondAttribute="leading" id="HVc-4w-HIM"/>
+                            <constraint firstItem="fJr-bT-Oqg" firstAttribute="top" secondItem="qgc-SJ-SHQ" secondAttribute="bottom" constant="8" id="Qer-ff-ZJK"/>
                             <constraint firstItem="ecy-28-2Sm" firstAttribute="trailing" secondItem="OPf-UJ-ygH" secondAttribute="trailing" id="W9A-Aa-1lR"/>
+                            <constraint firstItem="qgc-SJ-SHQ" firstAttribute="top" secondItem="OPf-UJ-ygH" secondAttribute="bottom" constant="8" id="X4D-gy-adW"/>
+                            <constraint firstItem="qgc-SJ-SHQ" firstAttribute="leading" secondItem="ecy-28-2Sm" secondAttribute="leading" id="cAm-3K-NQm"/>
+                            <constraint firstAttribute="bottom" secondItem="fJr-bT-Oqg" secondAttribute="bottom" constant="8" id="wkM-lm-kx1"/>
+                            <constraint firstItem="fJr-bT-Oqg" firstAttribute="leading" secondItem="ecy-28-2Sm" secondAttribute="leading" constant="8" id="zq2-zV-Oy8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ecy-28-2Sm"/>
                     </view>
                     <navigationItem key="navigationItem" id="osK-rd-Imv"/>
                     <connections>
+                        <outlet property="bottomConstraint" destination="wkM-lm-kx1" id="U2B-YH-VR6"/>
                         <outlet property="messagesTableView" destination="OPf-UJ-ygH" id="xaG-TA-PSi"/>
+                        <outlet property="sendButton" destination="w5Z-jR-gpN" id="vMR-On-ZLU"/>
+                        <outlet property="textView" destination="vXa-3h-k31" id="dey-ag-C16"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLA-QZ-iQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>

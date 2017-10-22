@@ -9,69 +9,56 @@
 import Foundation
 import UIKit
 
-class SaveOperation: AsyncOperation {
+class SaveOperation: Operation {
+    weak var dataManager: DataManager?
     let fileURL: URL
-
-    init(fileURL: URL) {
+    init(fileURL: URL, dataManager: DataManager?) {
         self.fileURL = fileURL
+        self.dataManager = dataManager
     }
 
     override func main() {
-        if self.isCancelled {
-            state = .finished
-        } else {
-            state = .executing
-            var success = false
-            let data = NSKeyedArchiver.archivedData(withRootObject: ProfileManager.shared)
-            if self.isCancelled {
-                state = .finished
-                return
+        var success = false
+        let data = NSKeyedArchiver.archivedData(withRootObject: ProfileManager.shared)
+        do {
+            try data.write(to: self.fileURL)
+            success = true
+        } catch {
+            success = false
+        }
+        OperationQueue.main.addOperation {
+            if let dataManager = self.dataManager {
+                dataManager.delegate?.didSave(dataManager, success: success)
             }
-            do {
-                try data.write(to: self.fileURL)
-                success = true
-            } catch {
-                success = false
-            }
-            OperationQueue.main.addOperation {
-                NotificationCenter.default.post(name: DataManagerDidSaveNotificationName, object: nil, userInfo: ["success": success, "sender": self])
-            }
-            state = .finished
         }
     }
 }
 
-class RestoreOperation: AsyncOperation {
+class RestoreOperation: Operation {
+    weak var dataManager: DataManager?
     let fileURL: URL
-
-    init(fileURL: URL) {
+    init(fileURL: URL, dataManager: DataManager?) {
         self.fileURL = fileURL
+        self.dataManager = dataManager
     }
 
     override func main() {
-        if self.isCancelled {
-            state = .finished
-        } else {
-            state = .executing
-            var data: Data
-            do {
-                data = try Data(contentsOf: self.fileURL)
-            } catch {
-                return
+        var success: Bool = false
+        let data: Data? = try? Data(contentsOf: self.fileURL)
+        if let data = data, let restored = NSKeyedUnarchiver.unarchiveObject(with: data) as? ProfileManager {
+            ProfileManager.shared = restored
+            success = true
+        }
+        OperationQueue.main.addOperation {
+            if let dataManager = self.dataManager {
+                dataManager.delegate?.didRestore(dataManager, success: success)
             }
-            if let restored = NSKeyedUnarchiver.unarchiveObject(with: data) as? ProfileManager {
-                ProfileManager.shared = restored
-                OperationQueue.main.addOperation {
-                    NotificationCenter.default.post(name: DataManagerDidRestoreNotificationName, object: nil)
-                }
-            }
-            state = .finished
         }
     }
 }
 
-class OperationDataManager: DataManagerProtocol {
-    static let shared = OperationDataManager()
+class OperationDataManager: DataManager {
+    weak var delegate: DataManagerDelegate?
     
     let fileURL: URL
     let queue: OperationQueue
@@ -88,12 +75,12 @@ class OperationDataManager: DataManagerProtocol {
     }
 
     func save() {
-        let saveOp = SaveOperation(fileURL: fileURL)
+        let saveOp = SaveOperation(fileURL: fileURL, dataManager: self)
         queue.addOperation(saveOp)
     }
 
     func restore() {
-        let restoreOp = RestoreOperation(fileURL: fileURL)
+        let restoreOp = RestoreOperation(fileURL: fileURL, dataManager: self)
         queue.addOperation(restoreOp)
     }
 

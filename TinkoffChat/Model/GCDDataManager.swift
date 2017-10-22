@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 
-class GCDDataManager: DataManagerProtocol {
-    static let shared = GCDDataManager()
-    
+class GCDDataManager: DataManager {
+    weak var delegate: DataManagerDelegate?
     let fileURL: URL
     
     init() {
@@ -33,24 +32,26 @@ class GCDDataManager: DataManagerProtocol {
             } catch {
                 success = false
             }
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: DataManagerDidSaveNotificationName, object: nil, userInfo: ["success": success, "sender": self])
+            DispatchQueue.main.async { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.delegate?.didSave(strongSelf, success: success)
+                }
             }
         }
     }
     
     func restore() {
         DispatchQueue.global(qos: .userInitiated).async {
-            var data: Data
-            do {
-                data = try Data(contentsOf: self.fileURL)
-            } catch {
-                return
-            }
-            if let restored = NSKeyedUnarchiver.unarchiveObject(with: data) as? ProfileManager {
+            var success = false
+            let data = try? Data(contentsOf: self.fileURL)
+            
+            if let data = data, let restored = NSKeyedUnarchiver.unarchiveObject(with: data) as? ProfileManager {
                 ProfileManager.shared = restored
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: DataManagerDidRestoreNotificationName, object: nil)
+                success = true
+            }
+            DispatchQueue.main.async { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.delegate?.didRestore(strongSelf, success: success)
                 }
             }
         }

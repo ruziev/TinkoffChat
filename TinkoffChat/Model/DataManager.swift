@@ -7,11 +7,10 @@
 //
 import UIKit
 
-protocol DataManagerProtocol {
+protocol DataManager: class {
     func save()
     func restore()
+    weak var delegate: DataManagerDelegate? {get set}
 }
 
-let DataManagerDidSaveNotificationName = Notification.Name("com.ruziev.DataManagerDidSaveNotificationName")
-let DataManagerDidRestoreNotificationName = Notification.Name("com.ruziev.DataManagerDidRestoreNotificationName")
 let DataManagerDumpFileName = "profile_data"

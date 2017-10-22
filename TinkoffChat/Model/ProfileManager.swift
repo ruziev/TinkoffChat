@@ -51,8 +51,8 @@ class ProfileManager: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        name = aDecoder.decodeObject(forKey: keys.name) as! String?
-        info = aDecoder.decodeObject(forKey: keys.info) as! String?
-        image = aDecoder.decodeObject(forKey: keys.image) as! UIImage?
+        name = aDecoder.decodeObject(forKey: keys.name) as? String
+        info = aDecoder.decodeObject(forKey: keys.info) as? String
+        image = aDecoder.decodeObject(forKey: keys.image) as? UIImage
     }
 }

@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum MessageType {
-    case incoming
-    case outgoing
-}
-
 class MessageCell: UITableViewCell {
     @IBOutlet weak var wrapperView: UIView!
     @IBOutlet weak var label: UILabel!

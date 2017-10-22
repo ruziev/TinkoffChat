@@ -8,8 +8,9 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
-
+class ProfileVC: UIViewController {
+    var gcdDataManager = GCDDataManager()
+    var operationDataManager = OperationDataManager()
     @IBOutlet weak var newImageButton: UIButton!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -20,49 +21,121 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var operationButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
     let imagePicker = UIImagePickerController()
+    
+    var inputDataChanged: Bool = false {
+        didSet {
+            if inputDataChanged && !processingDataManager {
+                enableButtons()
+            } else {
+                disableButtons()
+            }
+        }
+    }
+    
+    var processingDataManager: Bool = false {
+        didSet {
+            if inputDataChanged && !processingDataManager {
+                enableButtons()
+            } else {
+                disableButtons()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        gcdDataManager.delegate = self
+        operationDataManager.delegate = self
         imagePicker.delegate = self
         nameTextField.delegate = self
         descriptionTextView.delegate = self
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(dataManagerSavedObserver), name: DataManagerDidSaveNotificationName, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(dataManagerRestoredObserver), name: DataManagerDidRestoreNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
         layout()
     }
     
+    // CLOSE THIS MODAL SCREEN
+    @IBAction func onCloseScreen(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // NEXT -> UI CHANGES
     func layout() {
         let newImageButtonCornerRadius = newImageButton.frame.height / 2.0
         newImageButton.layer.cornerRadius = newImageButtonCornerRadius
         profileImageView.layer.cornerRadius = newImageButtonCornerRadius
         profileImageView.layer.masksToBounds = true
-        gcdButton.layer.borderWidth = 1.0
-        gcdButton.layer.borderColor = UIColor.black.cgColor
-        gcdButton.layer.cornerRadius = 12.0
-        operationButton.layer.borderWidth = 1.0
-        operationButton.layer.borderColor = UIColor.black.cgColor
-        operationButton.layer.cornerRadius = 12.0
-        
-        GCDDataManager.shared.restore()
         disableButtons()
+        gcdDataManager.restore()
+        activityIndicator.startAnimating()
     }
     
     func enableButtons() {
         gcdButton.isEnabled = true
         operationButton.isEnabled = true
     }
-    
     func disableButtons() {
         gcdButton.isEnabled = false
         operationButton.isEnabled = false
     }
     
+}
+
+// SAVING DATA STAFF
+extension ProfileVC: DataManagerDelegate {
+    @IBAction func onSaveButtonTap(_ sender: UIButton) {
+        let dataManagerOptions: [Int: DataManager] = [
+            1: gcdDataManager,
+            2: operationDataManager
+        ]
+        
+        let newName = nameTextField.text
+        let newInfo = descriptionTextView.text
+        let newImage = profileImageView.image
+        
+        guard let dataManager = dataManagerOptions[sender.tag] else { fatalError("unknown data manager button tag") }
+        
+        if ProfileManager.shared.update(name: newName, info: newInfo, image: newImage) {
+            activityIndicator.startAnimating()
+            dataManager.save()
+            processingDataManager = true
+        }
+    }
+    
+    func didSave(_ dataManager: DataManager, success: Bool) {
+        if success {
+            activityIndicator.stopAnimating()
+            let alertVC = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertVC, animated: true, completion: nil)
+            processingDataManager = false
+            inputDataChanged = false
+        } else {
+            let alertVC = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                self.activityIndicator.stopAnimating()
+                self.processingDataManager = false
+            }))
+            alertVC.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { _ in
+                dataManager.save()
+            }))
+        }
+    }
+    
+    func didRestore(_ dataManager: DataManager, success: Bool) {
+        activityIndicator.stopAnimating()
+        nameTextField.text = ProfileManager.shared.name ?? "My name"
+        descriptionTextView.text = ProfileManager.shared.info ?? "About myself"
+        profileImageView.image = ProfileManager.shared.image ?? profileImageView.image
+    }
+}
+
+
+// IMAGE PICKING STAFF
+extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBAction func onNewImageButton(_ sender: UIButton) {
         let optionsAlertVC = UIAlertController(title: "Выбери изображение профиля", message: nil, preferredStyle: .actionSheet)
         
@@ -84,62 +157,6 @@ class ProfileViewController: UIViewController {
         present(optionsAlertVC, animated: true, completion: nil)
     }
     
-    @IBAction func onCloseScreen(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    @IBAction func onSaveButtonTap(_ sender: UIButton) {
-        let dataManagerOptions: [Int: DataManagerProtocol] = [
-            1: GCDDataManager.shared,
-            2: OperationDataManager.shared
-        ]
-        
-        disableButtons()
-        
-        let newName = nameTextField.text
-        let newInfo = descriptionTextView.text
-        let newImage = profileImageView.image
-        
-        guard let dataManager = dataManagerOptions[sender.tag] else { fatalError("unknown data manager button tag") }
-        
-        if ProfileManager.shared.update(name: newName, info: newInfo, image: newImage) {
-            activityIndicator.startAnimating()
-            dataManager.save()
-        }
-    }
-    
-    @objc func dataManagerSavedObserver(notification: Notification) {
-        activityIndicator.stopAnimating()
-        let success = notification.userInfo?["success"] as? Bool
-        if let success = success, success {
-            let alertVC = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alertVC, animated: true, completion: nil)
-            disableButtons()
-        } else {
-            enableButtons()
-            let alertVC = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            alertVC.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { _ in
-                if let sender = notification.userInfo?["sender"] as? DataManagerProtocol {
-                    self.activityIndicator.startAnimating()
-                    sender.save()
-                }
-            }))
-        }
-    }
-    
-    @objc func dataManagerRestoredObserver(notification: Notification) {
-        activityIndicator.stopAnimating()
-        nameTextField.text = ProfileManager.shared.name ?? "My name"
-        descriptionTextView.text = ProfileManager.shared.info ?? "About myself"
-        profileImageView.image = ProfileManager.shared.image ?? profileImageView.image
-    }
-    
-}
-
-extension ProfileViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             profileImageView.contentMode = .scaleAspectFill
@@ -151,21 +168,19 @@ extension ProfileViewController: UIImagePickerControllerDelegate {
     }
 }
 
-extension ProfileViewController: UINavigationControllerDelegate {
-    
-}
 
-extension ProfileViewController: UITextFieldDelegate, UITextViewDelegate {
+// TEXT INPUT STUFF
+extension ProfileVC: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        enableButtons()
+        inputDataChanged = true
         return true
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            enableButtons()
+            inputDataChanged = true
             return false
         }
         return true

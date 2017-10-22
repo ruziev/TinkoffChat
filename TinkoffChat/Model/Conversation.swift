@@ -8,22 +8,53 @@
 import Foundation
 import UIKit
 
-struct ConversationListCellData {
-    var name: String
-    var message: String?
-    var date: Date?
-    var online: Bool = false
-    var hasUnreadMessages: Bool = false
+class Conversation {
+    let userID: String
+    var username: String
+    var lastMessage: String? {
+        return messages.last?.text
+    }
+    var date: Date? {
+        return messages.last?.date
+    }
+    var online: Bool
+    var hasUnreadMessages: Bool
+    var messages: [Message]
+    
+    init(with userID: String, username: String, online: Bool = false, hasUnreadMessages: Bool = false, messages: [Message] = []) {
+        self.userID = userID
+        self.username = username
+        self.online = online
+        self.hasUnreadMessages = hasUnreadMessages
+        self.messages = messages
+    }
+    
+    static func comparator(_ conv1: Conversation, _ conv2: Conversation) -> Bool {
+        if conv1.date == nil && conv2.date == nil {
+            return conv1.username.lowercased() < conv2.username.lowercased()
+        }
+        guard let date1 = conv1.date else {
+            return false
+        }
+        guard let date2 = conv2.date else {
+            return true
+        }
+        if date1 != date2 {
+            return date1.compare(date2).rawValue == 1 ? true : false
+        } else {
+            return conv1.username.lowercased() < conv2.username.lowercased()
+        }
+    }
 }
 
-extension ConversationListCellData {
-    // prepare UITableViewCell
+extension Conversation {
+    // prepare cell
     
     func prepareCell(cell: ConversationListCell) {
-        cell.nameLabel.text = name
-        if let message = message {
+        cell.nameLabel.text = username
+        if let lastMessage = lastMessage {
             cell.messageLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .regular)
-            cell.messageLabel.text = message
+            cell.messageLabel.text = lastMessage
         } else {
             cell.messageLabel.font = UIFont(name: "Courier", size: 14.0)
             cell.messageLabel.text = "No messages yet"
