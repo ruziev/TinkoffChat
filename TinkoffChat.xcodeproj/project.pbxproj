@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		991556C11F9E2D1D00796604 /* displayAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 991556C01F9E2D1D00796604 /* displayAlert.swift */; };
 		992157A31F76606E00142F5F /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 992157A21F76606E00142F5F /* Media.xcassets */; };
 		99242B2F1F936D090007CA4F /* GCDDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99242B2E1F936D090007CA4F /* GCDDataManager.swift */; };
 		99242B311F9388DA0007CA4F /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99242B301F9388DA0007CA4F /* ProfileManager.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		991556C01F9E2D1D00796604 /* displayAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = displayAlert.swift; sourceTree = "<group>"; };
 		992157A21F76606E00142F5F /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		99242B2E1F936D090007CA4F /* GCDDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDDataManager.swift; sourceTree = "<group>"; };
 		99242B301F9388DA0007CA4F /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				992918781F9BE0380063C3B9 /* SortedArray.swift */,
 				996A10891F7E996700EBDFD7 /* UIImagePickerController.swift */,
 				9998524B1F8A5EF700A46BC1 /* UIColor.swift */,
+				991556C01F9E2D1D00796604 /* displayAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 			files = (
 				999C3CB41F9BA60500785038 /* CommunicationManagerDelegate.swift in Sources */,
 				999C3C6E1F98EF4100785038 /* Communicator.swift in Sources */,
+				991556C11F9E2D1D00796604 /* displayAlert.swift in Sources */,
 				999C3CB21F9B9DD600785038 /* CommunicationManager.swift in Sources */,
 				999C3CAE1F9AA20700785038 /* MultipeerCommunicator.swift in Sources */,
 				994C9B641F93CC960002DEC0 /* DataManager.swift in Sources */,

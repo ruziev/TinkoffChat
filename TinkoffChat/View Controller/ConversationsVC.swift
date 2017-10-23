@@ -83,7 +83,7 @@ extension ConversationsVC: CommunicationManagerDelegate {
     }
     
     func communicationManagerFailedToStart(_ error: Error) {
-        
+        displayAlert(title: "Error", message: error.localizedDescription)
     }
     
 }
