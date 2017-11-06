@@ -91,12 +91,12 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="vvo-ff-ZZg">
                                                 <rect key="frame" x="16" y="16" width="343" height="44"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hlh-d7-lA4" customClass="RoundedButton" customModule="TinkoffChat" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="163.5" height="44"/>
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hlh-d7-lA4" userLabel="Save Button" customClass="RoundedButton" customModule="TinkoffChat" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="Q6V-fg-B97"/>
                                                         </constraints>
-                                                        <state key="normal" title="GCD">
+                                                        <state key="normal" title="Save">
                                                             <color key="titleColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -112,29 +112,6 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="onSaveButtonTap:" destination="jdg-L9-SGa" eventType="touchUpInside" id="rSo-tP-eCY"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42a-F1-vPk" customClass="RoundedButton" customModule="TinkoffChat" customModuleProvider="target">
-                                                        <rect key="frame" x="179.5" y="0.0" width="163.5" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="Yvs-G0-Jx8"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Operation">
-                                                            <color key="titleColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="12"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                <real key="value" value="2"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="onSaveButtonTap:" destination="jdg-L9-SGa" eventType="touchUpInside" id="IDN-PD-TcU"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -171,11 +148,10 @@
                         <outlet property="activityIndicator" destination="8mH-P7-eNd" id="oyx-Bg-RXk"/>
                         <outlet property="bottomView" destination="DtY-kw-HKD" id="YOE-7i-na9"/>
                         <outlet property="descriptionTextView" destination="S2x-GE-koK" id="XrL-h6-jEK"/>
-                        <outlet property="gcdButton" destination="Hlh-d7-lA4" id="3Ko-8f-Fl9"/>
                         <outlet property="nameTextField" destination="SCx-Xc-wQG" id="NmN-6X-T2Q"/>
                         <outlet property="newImageButton" destination="DD2-6p-qZx" id="5Dc-xu-6gj"/>
-                        <outlet property="operationButton" destination="42a-F1-vPk" id="uMY-cg-z3G"/>
                         <outlet property="profileImageView" destination="xzz-FP-KnN" id="rMq-Ad-MyJ"/>
+                        <outlet property="saveButton" destination="Hlh-d7-lA4" id="s3y-i4-VIN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIa-bi-nCK" sceneMemberID="firstResponder"/>
@@ -185,7 +161,6 @@
         <!--Navigation Controller-->
         <scene sceneID="myA-yj-Zfl">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uAF-li-pCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="flk-qF-Igp" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Nse-fE-g48">
@@ -197,6 +172,7 @@
                         <segue destination="jdg-L9-SGa" kind="relationship" relationship="rootViewController" id="UdD-cI-6I5"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uAF-li-pCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2051.1999999999998" y="-393.10344827586209"/>
         </scene>

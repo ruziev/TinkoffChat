@@ -9,16 +9,13 @@
 import UIKit
 
 class ProfileVC: UIViewController {
-    var profileManager: IProfileManager!
-    var gcdDataManager: IDataManager = GCDDataManager()
-    var operationDataManager: IDataManager = OperationDataManager()
+    var profileManager: IProfileManager = ProfileManager()
+    lazy var dataManager: IDataManager = profileManager
     @IBOutlet weak var newImageButton: UIButton!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
-    
-    @IBOutlet weak var gcdButton: UIButton!
-    @IBOutlet weak var operationButton: UIButton!
+    @IBOutlet weak var saveButton: RoundedButton!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     let imagePicker = UIImagePickerController()
@@ -46,8 +43,7 @@ class ProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gcdDataManager.delegate = self
-        operationDataManager.delegate = self
+        dataManager.delegate = self
         imagePicker.delegate = self
         nameTextField.delegate = self
         descriptionTextView.delegate = self
@@ -69,17 +65,15 @@ class ProfileVC: UIViewController {
         profileImageView.layer.cornerRadius = newImageButtonCornerRadius
         profileImageView.layer.masksToBounds = true
         disableButtons()
-        gcdDataManager.restore()
+        dataManager.restore()
         activityIndicator.startAnimating()
     }
     
     func enableButtons() {
-        gcdButton.isEnabled = true
-        operationButton.isEnabled = true
+        saveButton.isEnabled = true
     }
     func disableButtons() {
-        gcdButton.isEnabled = false
-        operationButton.isEnabled = false
+        saveButton.isEnabled = false
     }
     
 }
@@ -94,16 +88,11 @@ extension ProfileVC: IDataManagerDelegate {
     }
     
     @IBAction func onSaveButtonTap(_ sender: UIButton) {
-        let dataManagerOptions: [Int: IDataManager] = [
-            1: gcdDataManager,
-            2: operationDataManager
-        ]
-        
         let newName = nameTextField.text
         let newInfo = descriptionTextView.text
         let newImage = profileImageView.image
         
-        guard let dataManager = dataManagerOptions[sender.tag] else { fatalError("unknown data manager button tag") }
+        let dataManager = profileManager
         
         if profileManager.update(name: newName, info: newInfo, image: newImage) {
             activityIndicator.startAnimating()

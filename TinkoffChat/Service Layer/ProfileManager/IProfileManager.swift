@@ -7,9 +7,9 @@
 //
 import UIKit
 
-protocol IProfileManager: class, NSCoding {
-    var image: UIImage? {get set}
-    var name: String? {get set}
-    var info: String? {get set}
+protocol IProfileManager: class, IDataManager, IStorageManagerDelegate {
+    var image: UIImage? {get}
+    var name: String? {get}
+    var info: String? {get}
     func update(name: String?, info: String?, image: UIImage?) -> Bool
 }

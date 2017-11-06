@@ -11,15 +11,14 @@ import UIKit
 class ConversationsVC: UIViewController {
     @IBOutlet weak var conversationsTableView: UITableView!
     var communicationManager: ICommunicationManager = CommunicationManager()
-    private let dataManager: IDataManager = GCDDataManager()
     var profileManager: IProfileManager = ProfileManager()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataManager.delegate = self
-        dataManager.restore()
+        profileManager.delegate = self
+        profileManager.restore()
         
         communicationManager.conversationsDelegate = self
         

@@ -23,15 +23,15 @@ extension UIViewController {
         if let keyboardHeight = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
             
             let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-            view.frame.origin.y = isKeyboardShowing ? -(keyboardHeight) : 0.0
+            view.frame.origin.y += isKeyboardShowing ? -(keyboardHeight) : keyboardHeight
         }
     }
     
     func addObserversForKeyboardAppearance() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification(_:)),
-                                               name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
+                                               name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification(_:)),
-                                               name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
+                                               name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 }
 

@@ -12,3 +12,4 @@ protocol IDataManager: class {
     func restore()
     weak var delegate: IDataManagerDelegate? {get set}
 }
+

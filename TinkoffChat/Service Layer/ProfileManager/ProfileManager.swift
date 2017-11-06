@@ -6,49 +6,73 @@
 //  Copyright © 2017 Jamshid Ruziev. All rights reserved.
 //
 
-import UIKit.UIImage
+import UIKit
 
-class ProfileManager: IProfileManager {    
-    struct keys {
-        static let image = "image"
-        static let name = "name"
-        static let info = "info"
+class ProfileManager : IProfileManager {
+    weak var delegate: IDataManagerDelegate?
+    var appUser: AppUser?
+    var storageManager: IStorageManager = StorageManager()
+    
+    var image: UIImage? {
+        if let data = appUser?.image {
+            return UIImage(data: data)
+        } else {
+            return nil
+        }
+    }
+    var name: String? {
+        return appUser?.name
+    }
+    var info: String? {
+        return appUser?.info
     }
     
     init() {
-        
+        storageManager.delegate = self
     }
-    
-    var image: UIImage?
-    var name: String?
-    var info: String?
     
     func update(name: String? = nil, info: String? = nil, image: UIImage? = nil) -> Bool {
         var hasChanged = false
         if let newName = name, newName != self.name {
-            self.name = newName
+            self.appUser?.name = newName
             hasChanged = true
         }
         if let newInfo = info, newInfo != self.info {
-            self.info = newInfo
+            self.appUser?.info = newInfo
             hasChanged = true
         }
         if let newImage = image, newImage != self.image {
-            self.image = newImage
+            self.appUser?.image = UIImagePNGRepresentation(newImage)
             hasChanged = true
         }
         return hasChanged
     }
-    
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(name, forKey: keys.name)
-        aCoder.encode(info, forKey: keys.info)
-        aCoder.encode(image, forKey: keys.image)
+
+}
+
+extension ProfileManager : IDataManager {
+    func save(_ profileManager: IProfileManager) {
+        if let appUser = self.appUser {
+            storageManager.save(appUser)
+        }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        name = aDecoder.decodeObject(forKey: keys.name) as? String
-        info = aDecoder.decodeObject(forKey: keys.info) as? String
-        image = aDecoder.decodeObject(forKey: keys.image) as? UIImage
+    func restore() {
+        storageManager.restoreAppUser()
+    }
+}
+
+extension ProfileManager : IStorageManagerDelegate {
+    func didSave(_ storageManager: IStorageManager, success: Bool) {
+        DispatchQueue.main.async {
+            self.delegate?.didSave(self, success: success)
+        }
+    }
+    
+    func didRestore(_ storageManager: IStorageManager, restored: AppUser?) {
+        appUser = restored
+        DispatchQueue.main.async {
+            self.delegate?.didRestore(self, restored: self)
+        }
     }
 }
