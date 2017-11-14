@@ -61,7 +61,7 @@ class MultipeerCommunicator: NSObject, ICommunicator {
     }
     
     
-    func sendMessage(string: String, to userID: String, completionHandler: ((Bool, Error?) -> ())?) {
+    func sendMessage(text: String, to userID: String, completionHandler: ((Bool, Error?) -> ())?) {
         var peerID: MCPeerID?
         for peer in sessions.keys {
             if peer.displayName == userID {
@@ -70,7 +70,8 @@ class MultipeerCommunicator: NSObject, ICommunicator {
             }
         }
         if let peerID = peerID {
-            let message = Message(text: string, type: .outgoing)
+            let sendingMessageId = MultipeerCommunicatorMessage.generateRandomMessageId()
+            let message = MultipeerCommunicatorMessage(text: text, messageId: sendingMessageId)
             do {
                 try sessions[peerID]!.send(JSONEncoder().encode(message), toPeers: [peerID], with: .reliable)
                 completionHandler?(true, nil)
@@ -102,7 +103,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate, MCNearbyService
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        delegate?.didLostUser(userID: peerID.displayName)
+        delegate?.didLostUser(userId: peerID.displayName)
         sessions.removeValue(forKey: peerID)
     }
     
@@ -141,9 +142,9 @@ extension MultipeerCommunicator: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .connected:
-            delegate?.didFoundUser(userID: peerID.displayName, userName: usernames[peerID])
+            delegate?.didFoundUser(userId: peerID.displayName, userName: usernames[peerID])
         case .notConnected:
-            delegate?.didLostUser(userID: peerID.displayName)
+            delegate?.didLostUser(userId: peerID.displayName)
         default:
             break
         }
@@ -151,9 +152,8 @@ extension MultipeerCommunicator: MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         do {
-            var message = try JSONDecoder().decode(Message.self, from: data)
-            message.type = .incoming
-            delegate?.didReceiveMessage(text: message.text, fromUser: peerID.displayName, toUser: myPeerID.displayName)
+            let message = try JSONDecoder().decode(MultipeerCommunicatorMessage.self, from: data)
+            delegate?.didReceiveMessage(text: message.text, from: peerID.displayName, to: myPeerID.displayName)
         } catch {
             return
         }
@@ -186,5 +186,21 @@ extension MultipeerCommunicator {
         } catch {
             return nil
         }
+    }
+}
+
+struct MultipeerCommunicatorMessage: Codable {
+    var text: String
+    var messageId: String
+    var eventType: String = "TextMessage"
+    
+    init(text: String, messageId: String) {
+        self.text = text
+        self.messageId = messageId
+    }
+    
+    static func generateRandomMessageId() -> String {
+        let string = "\(arc4random_uniform(UINT32_MAX))+\(Date.timeIntervalSinceReferenceDate)+\(arc4random_uniform(UINT32_MAX))".data(using: .utf8)?.base64EncodedString()
+        return string!
     }
 }

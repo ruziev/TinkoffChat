@@ -1,25 +1,22 @@
 //
-//  IConversation.swift
+//  ConversationCellConfiguration.swift
 //  TinkoffChat
 //
-//  Created by Jamshid Ruziev on 10/31/17.
+//  Created by Jamshid Ruziev on 07/10/2017.
 //  Copyright © 2017 Jamshid Ruziev. All rights reserved.
 //
-
+import Foundation
 import UIKit
 
-protocol IConversation: class {
-    var userID: String {get}
-    var username: String {get set}
-    var lastMessage: String? {get}
-    var date: Date? {get}
-    var online: Bool {get set}
-    var hasUnreadMessages: Bool {get set}
-    var messages: [Message] {get set}
-    func prepareCell(cell: IConversationCell)
+struct ConversationDisplayModel {
+    var username: String
+    var lastMessage: String?
+    var date: Date?
+    var online: Bool
+    var hasUnreadMessages: Bool
 }
 
-extension IConversation {
+extension ConversationDisplayModel {
     // IConversationCell
     func prepareCell(cell: IConversationCell) {
         cell.nameLabel.text = username

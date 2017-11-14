@@ -8,17 +8,19 @@
 
 import UIKit
 
-protocol IMessage {
-    var messageId: String {get}
-    var text: String {get}
-    var date: Date {get}
-    var type: IMessageType {get}
-    func prepareCell(cell: IMessageCell)
-    func layoutCell(cell: IMessageCell)
+struct MessageDisplayModel {
+    var text: String
+    var date: Date
+    var type: MessageDisplayModelType
 }
 
-extension IMessage {
-    // IMessageCell
+enum MessageDisplayModelType {
+    case incoming
+    case outgoing
+}
+
+extension MessageDisplayModel {
+    // for IMessageCell
     func prepareCell(cell: IMessageCell) {
         cell.label.text = text
     }

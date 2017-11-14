@@ -6,9 +6,11 @@
 //  Copyright © 2017 Jamshid Ruziev. All rights reserved.
 //
 
+import UIKit
+
 class StorageManager: IStorageManager {
     weak var delegate: IStorageManagerDelegate?
-    var coreDataStack = CoreDataStack()
+    var coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack
     
     func save(_ appUser: AppUser) {
         guard let saveContext = coreDataStack.saveContext else {
@@ -33,6 +35,4 @@ class StorageManager: IStorageManager {
             }
         }
     }
-    
-    
 }

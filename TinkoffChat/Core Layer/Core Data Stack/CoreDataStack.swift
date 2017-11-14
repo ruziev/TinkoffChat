@@ -13,7 +13,7 @@ class CoreDataStack: NSObject {
     private var storeURL : URL {
         get {
             let documentDirURL : URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let url = documentDirURL.appendingPathComponent("Store.sqlite")
+            let url = documentDirURL.appendingPathComponent("Store1.sqlite")
             return url
         }
     }

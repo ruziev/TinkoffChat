@@ -9,9 +9,6 @@
 protocol ICommunicationManager {
     var online: Bool {get set}
     var displayedUsername: String {get set}
-    var onlineConversations: [IConversation] {get}
-    var historyConversations: [IConversation] {get}
-    weak var conversationsDelegate: ICommunicationManagerDelegate? {get set}
-    weak var conversationDelegate: ICommunicationManagerDelegate? {get set}
-    func sendMessage(in conversation: IConversation, text: String, completion: ((Bool,Error?) -> ())?)
+    func sendMessage(in conversationId: String, text: String, completion: ((Bool,Error?) -> ())?)
+    func messagesAreRead(in conversationId: String)
 }

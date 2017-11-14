@@ -7,20 +7,20 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationsVC: UIViewController {
     @IBOutlet weak var conversationsTableView: UITableView!
     var communicationManager: ICommunicationManager = CommunicationManager()
     var profileManager: IProfileManager = ProfileManager()
-    
+    var dataProvider: ConversationsDataProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        dataProvider = ConversationsDataProvider(tableView: conversationsTableView)
         profileManager.delegate = self
         profileManager.restore()
-        
-        communicationManager.conversationsDelegate = self
         
         conversationsTableView.dataSource = self
         conversationsTableView.delegate = self
@@ -55,63 +55,58 @@ extension ConversationsVC: IDataManagerDelegate {
     }
 }
 
-extension ConversationsVC: UITableViewDataSource {    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+extension ConversationsVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let frc = dataProvider?.fetchedResultsController, let sections = frc.sections else {
+            return nil
+        }
+        return sections[section].indexTitle == "1" ? "Online" : "History"
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return ["Online","History"][section]
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard let frc = dataProvider?.fetchedResultsController, let sectionsCount = frc.sections?.count else {
+            return 0
+        }
+        return sectionsCount
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch(section) {
-        case 0:
-            return communicationManager.onlineConversations.count
-        case 1:
-            return communicationManager.historyConversations.count
-        default:
+        guard let frc = dataProvider?.fetchedResultsController, let sections = frc.sections else {
             return 0
         }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let conv = communicationManager.onlineConversations[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationsListCell", for: indexPath) as! ConversationCell
-        conv.prepareCell(cell: cell)
+        if let conversation = dataProvider?.fetchedResultsController.object(at: indexPath) {
+            var conversationDisplayModel = ConversationDisplayModel(username: conversation.user?.name ?? "Unknown", lastMessage: nil, date: nil, online: conversation.online, hasUnreadMessages: conversation.hasUnreadMessages)
+            if let lastMessage = conversation.lastMessage {
+                conversationDisplayModel.lastMessage = lastMessage.text
+                conversationDisplayModel.date = lastMessage.date
+            }
+            conversationDisplayModel.prepareCell(cell: cell)
+        }
         return cell
     }
 }
 
 extension ConversationsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:
-            performSegue(withIdentifier: "fromConversationsListToConversation", sender: indexPath)
-            let selectedCell = tableView.cellForRow(at: indexPath)
-            selectedCell?.isSelected = false
-        default:
-            return
-        }
-        
+        performSegue(withIdentifier: "fromConversationsListToConversation", sender: indexPath)
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        selectedCell?.isSelected = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "fromConversationsListToConversation" {
+            guard let indexPath = sender as? IndexPath, let conversation = dataProvider?.fetchedResultsController.object(at: indexPath) else {
+                fatalError("Wrong indexPath selected or sender is not of type IndexPath!")
+            }
             let destinationVC = segue.destination as! ConversationVC
-            destinationVC.conversationID = sender as! IndexPath
+            destinationVC.conversationId = conversation.conversationId
+            destinationVC.title = conversation.user?.name
             destinationVC.communicationManager = communicationManager
         }
     }
-}
-
-extension ConversationsVC: ICommunicationManagerDelegate {
-    func shouldReload() {
-        conversationsTableView.reloadData()
-    }
-    
-    func communicationManagerFailedToStart(_ error: Error) {
-        displayAlert(title: "Error", message: error.localizedDescription)
-    }
-    
 }

@@ -9,6 +9,8 @@
 import UIKit
 
 class CommunicationManager: ICommunicationManager, ICommunicatorDelegate {
+    var coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack
+    
     var displayedUsername: String {
         didSet {
             communicator.displayedUsername = displayedUsername
@@ -22,171 +24,95 @@ class CommunicationManager: ICommunicationManager, ICommunicatorDelegate {
             communicator.online = online
         }
     }
-    weak var conversationsDelegate: ICommunicationManagerDelegate?
-    weak var conversationDelegate: ICommunicationManagerDelegate?
-    public private(set) var onlineConversations: [IConversation] = []
-    public private(set) var historyConversations: [IConversation] = []
-    
     
     init() {
         displayedUsername = communicator.displayedUsername
         communicator.delegate = self
     }
     
-    func delegateShouldReload() {
-        DispatchQueue.main.async {
-            self.conversationsDelegate?.shouldReload()
+    func didFoundUser(userId: String, userName: String?) {
+        guard let saveContext = coreDataStack.saveContext else {
+            fatalError("Core data stack save context is nil!")
         }
+        guard let user = User.findOrInsertUser(in: saveContext, userId: userId) else {
+            fatalError("Could not create/find new user!")
+        }
+        user.name = userName
+        guard let userId = user.userId else {
+            fatalError("Found/created user has no userId!")
+        }
+        let conversation = Conversation.findOrInsertConversation(in: saveContext, with: userId)
+        conversation?.user = user
+        conversation?.online = true
+        coreDataStack.performSave(context: saveContext, completionHandler: nil)
     }
     
-    func delegatesShouldReload() {
-        DispatchQueue.main.async {
-            self.conversationsDelegate?.shouldReload()
-            self.conversationDelegate?.shouldReload() // to disable specific chat
+    func didLostUser(userId: String) {
+        guard let saveContext = coreDataStack.saveContext else {
+            fatalError("Core data stack save context is nil!")
         }
-    }
-    
-    fileprivate func sortOnlineConversations() {
-        func conversationsComparatorByDateOrName(_ conv1: IConversation, _ conv2: IConversation) -> Bool {
-            if conv1.date == nil && conv2.date == nil {
-                return conv1.username.lowercased() < conv2.username.lowercased()
-            }
-            guard let date1 = conv1.date else {
-                return false
-            }
-            guard let date2 = conv2.date else {
-                return true
-            }
-            if date1 != date2 {
-                return date1.compare(date2).rawValue == 1 ? true : false
-            } else {
-                return conv1.username.lowercased() < conv2.username.lowercased()
-            }
-        }
-        onlineConversations.sort(by: conversationsComparatorByDateOrName)
-    }
-    
-    func didFoundUser(userID: String, userName: String?) {
-        for conv in onlineConversations {
-            if conv.userID == userID {
-                return
-            }
-        }
-        let newConversation: IConversation = Conversation(with: userID, username: userName ?? "Unknown", online: true)
-        onlineConversations.append(newConversation)
-        sortOnlineConversations()
-        delegateShouldReload()
-    }
-    
-    func didLostUser(userID: String) {
-        var index: Int?
-        for (i,conv) in onlineConversations.enumerated() {
-            if conv.userID == userID {
-                index = i
-                break
-            }
-        }
-        if let index = index {
-            onlineConversations[index].online = false
-            onlineConversations.remove(at: index) // this object should not dealloc if we are in conversationVC
-            delegatesShouldReload()
-        }
+        let conversation = Conversation.findOrInsertConversation(in: saveContext, with: userId)
+        conversation?.online = false
+        coreDataStack.performSave(context: saveContext, completionHandler: nil)
     }
     
     func failedToStartBrowsingForUsers(error: Error) {
-        DispatchQueue.main.async {
-            self.conversationsDelegate?.communicationManagerFailedToStart?(error)
-        }
+        
     }
     
     func failedToStartAdvertising(error: Error) {
-        DispatchQueue.main.async {
-            self.conversationsDelegate?.communicationManagerFailedToStart?(error)
-        }
+        
     }
     
-    func didReceiveMessage(text: String, fromUser: String, toUser: String) {
+    func didReceiveMessage(text: String, from conversationId: String, to destinationUserId: String) {
         // this implementation assumes toUser is current user (owner)
-        let newMessage = Message(text: text, type: .incoming)
-        var inConversation: IConversation? = nil
-        for conv in onlineConversations {
-            if conv.userID == fromUser {
-                inConversation = conv
-                break
-            }
+        guard let saveContext = coreDataStack.saveContext else {
+            fatalError("Core data stack save context is nil!")
         }
-        inConversation?.messages.append(newMessage)
-        inConversation?.hasUnreadMessages = true
-        sortOnlineConversations()
-        delegatesShouldReload()
+        guard let conversation = Conversation.findOrInsertConversation(in: saveContext, with: conversationId) else {
+            fatalError("New message, but could not find conversation with such conversationId!")
+        }
+        let message = Message.insertMessage(in: saveContext)
+        message?.conversation = conversation
+        message?.text = text
+        message?.date = Date()
+        message?.isIncoming = true
+        conversation.hasUnreadMessages = true
+        conversation.lastMessage = message
+        coreDataStack.performSave(context: saveContext, completionHandler: nil)
     }
     
-    func sendMessage(in conversation: IConversation, text: String, completion: ((Bool,Error?) -> ())?) {
-        communicator.sendMessage(string: text, to: conversation.userID, completionHandler: { (success, error) in
+    func sendMessage(in conversationId: String, text: String, completion: ((Bool,Error?) -> ())?) {
+        communicator.sendMessage(text: text, to: conversationId, completionHandler: { [weak self] (success, error) in
             if success {
-                conversation.messages.append(Message(text: text, type: .outgoing))
-                self.sortOnlineConversations()
+                guard let saveContext = self?.coreDataStack.saveContext else {
+                    fatalError("Core data stack save context is nil!")
+                }
+                guard let conversation = Conversation.findOrInsertConversation(in: saveContext, with: conversationId) else {
+                    fatalError("New message, but could not find conversation with such conversationId!")
+                }
+                let message = Message.insertMessage(in: saveContext)
+                message?.conversation = conversation
+                message?.text = text
+                message?.date = Date()
+                message?.isIncoming = false
+                conversation.lastMessage = message
+                self?.coreDataStack.performSave(context: saveContext, completionHandler: nil)
             }
             DispatchQueue.main.async {
                 completion?(success, error)
-                if success {
-                    self.conversationDelegate?.shouldReload()
-                }
             }
         })
     }
+    
+    func messagesAreRead(in conversationId: String) {
+        guard let saveContext = coreDataStack.saveContext else {
+            fatalError("Core data stack save context is nil!")
+        }
+        guard let conversation = Conversation.findOrInsertConversation(in: saveContext, with: conversationId) else {
+            fatalError("New message, but could not find conversation with such conversationId!")
+        }
+        conversation.hasUnreadMessages = false
+        coreDataStack.performSave(context: saveContext, completionHandler: nil)
+    }
 }
-
-//extension CommunicationManager {
-//    // Related to conversations list
-//
-//    func conversationsTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        var data_: Conversation?
-//        switch indexPath.section {
-//        case 0:
-//            data_ = onlineConversations[indexPath.row]
-//        case 1:
-//            data_ = historyConversations[indexPath.row]
-//        default:
-//            break
-//        }
-//        guard let data = data_ else {
-//            fatalError("Bad indexPath for conversations tableView")
-//        }
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "conversationsListCell", for: indexPath) as! ConversationListCell
-//        data.prepareCell(cell: cell)
-//        return cell
-//    }
-//
-//    func conversationsTableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:
-//            return onlineConversations.count
-//        case 1:
-//            return historyConversations.count
-//        default:
-//            return 0
-//        }
-//    }
-//
-//    func conversationsNumberOfSections(in tableView: UITableView) -> Int {
-//        return conversationsHeadersTitle.count
-//    }
-//
-//    func conversationsTableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return conversationsHeadersTitle[section]
-//    }
-//
-//    func conversation(for indexPath: IndexPath) -> Conversation {
-//        switch indexPath.section {
-//        case 0:
-//            return onlineConversations[indexPath.row]
-//        case 1:
-//            return historyConversations[indexPath.row]
-//        default:
-//            fatalError("Invalid indexPath for \(#function)")
-//        }
-//    }
-//
-//}
-

@@ -9,29 +9,20 @@
 import UIKit
 
 class ConversationVC: UIViewController {
-    var conversationID: IndexPath!
+    var conversationId: String!
     
     @IBOutlet weak var messagesTableView: UITableView!
     var communicationManager: ICommunicationManager!
-    var conversation: IConversation!
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var sendButton: UIButton!
     
+    var dataProvider: MessagesDataProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        switch conversationID.section {
-        case 0:
-            conversation = communicationManager.onlineConversations[conversationID.row]
-        default:
-            fatalError("Only online conversations")
-        }
-        
-        self.title = conversation.username
-        
-        communicationManager.conversationDelegate = self
+        dataProvider = MessagesDataProvider(tableView: messagesTableView, conversationId: conversationId)
         messagesTableView.dataSource = self
         messagesTableView.delegate = self
         addObserversForKeyboardAppearance()
@@ -40,9 +31,10 @@ class ConversationVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         messagesTableView.scrollToBottom(animated: false)
-        conversation.hasUnreadMessages = false
+        // make messages READ
+        communicationManager.messagesAreRead(in: conversationId)
     }
-    
+
     @IBAction func onSendButtonTap(_ sender: UIButton) {
         let text = textView.text!
         /// validating message
@@ -50,7 +42,7 @@ class ConversationVC: UIViewController {
             // string contains only whitespace characters
             return
         }
-        communicationManager.sendMessage(in: conversation, text: text, completion: { [weak self] (success, error) in
+        communicationManager.sendMessage(in: conversationId, text: text, completion: { [weak self] (success, error) in
             if success {
                 self?.textView.text = ""
                 self?.textView.resignFirstResponder()
@@ -64,44 +56,48 @@ class ConversationVC: UIViewController {
     }
 }
 
-extension ConversationVC: ICommunicationManagerDelegate {
-    func shouldReload() {
-        messagesTableView.reloadData()
-        messagesTableView.scrollToBottom(animated: false)
-        conversation.hasUnreadMessages = false
-        if !conversation.online {
-            sendButton.isEnabled = false
-        } else {
-            sendButton.isEnabled = true
-        }
-    }
-}
-
 extension ConversationVC: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard let frc = dataProvider?.fetchedResultsController, let sectionsCount = frc.sections?.count else {
+            return 0
+        }
+        return sectionsCount
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversation.messages.count
+        guard let frc = dataProvider?.fetchedResultsController, let sections = frc.sections else {
+            return 0
+        }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = conversation.messages[indexPath.row]
-        switch message.type {
-        case .incoming:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "incomingMessageCell", for: indexPath) as! MessageCell
-            message.prepareCell(cell: cell)
-            return cell
-        case .outgoing:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "outgoingMessageCell", for: indexPath) as! MessageCell
-            message.prepareCell(cell: cell)
-            return cell
+        var cell = MessageCell()
+        if let message = dataProvider?.fetchedResultsController.object(at: indexPath) {
+            guard let text = message.text, let date = message.date else {
+                assert(false, "Message has no text or/and date!")
+            }
+            let messageDisplayModel = MessageDisplayModel(text: text, date: date, type: message.isIncoming ? .incoming : .outgoing)
+            let cellReuseIdentifier = message.isIncoming ? "incomingMessageCell" : "outgoingMessageCell"
+            cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! MessageCell
+            messageDisplayModel.prepareCell(cell: cell)
         }
+        return cell
     }
 }
 
 extension ConversationVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let messageCell = cell as! MessageCell
-        let message = conversation.messages[indexPath.row]
+        guard let message = dataProvider?.fetchedResultsController.object(at: indexPath) else {
+            fatalError("Wrong indexPath!")
+        }
+        guard let text = message.text, let date = message.date else {
+            assert(false, "Message has no text or/and date!")
+        }
+        let messageDisplayModel = MessageDisplayModel(text: text, date: date, type: message.isIncoming ? .incoming : .outgoing)
         messageCell.layoutIfNeeded()
-        message.layoutCell(cell: messageCell)
+        messageDisplayModel.layoutCell(cell: messageCell)
     }
 }
+

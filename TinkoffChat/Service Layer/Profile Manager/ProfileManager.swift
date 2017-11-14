@@ -14,17 +14,17 @@ class ProfileManager : IProfileManager {
     var storageManager: IStorageManager = StorageManager()
     
     var image: UIImage? {
-        if let data = appUser?.image {
+        if let data = appUser?.user?.image {
             return UIImage(data: data)
         } else {
             return nil
         }
     }
     var name: String? {
-        return appUser?.name
+        return appUser?.user?.name
     }
     var info: String? {
-        return appUser?.info
+        return appUser?.user?.info
     }
     
     init() {
@@ -34,15 +34,15 @@ class ProfileManager : IProfileManager {
     func update(name: String? = nil, info: String? = nil, image: UIImage? = nil) -> Bool {
         var hasChanged = false
         if let newName = name, newName != self.name {
-            self.appUser?.name = newName
+            self.appUser?.user?.name = newName
             hasChanged = true
         }
         if let newInfo = info, newInfo != self.info {
-            self.appUser?.info = newInfo
+            self.appUser?.user?.info = newInfo
             hasChanged = true
         }
         if let newImage = image, newImage != self.image {
-            self.appUser?.image = UIImagePNGRepresentation(newImage)
+            self.appUser?.user?.image = UIImagePNGRepresentation(newImage)
             hasChanged = true
         }
         return hasChanged

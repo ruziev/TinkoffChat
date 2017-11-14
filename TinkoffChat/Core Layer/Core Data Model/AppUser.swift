@@ -10,6 +10,7 @@ import CoreData
 extension AppUser {
     static func insertAppUser(in context: NSManagedObjectContext) -> AppUser? {
         if let appUser = NSEntityDescription.insertNewObject(forEntityName: "AppUser", into: context) as? AppUser {
+            appUser.user = User.insertUser(in: context)
             return appUser
         }
         return nil
