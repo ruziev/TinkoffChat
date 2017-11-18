@@ -57,8 +57,12 @@ class ProfileVC: UIViewController {
     @IBAction func onCloseScreen(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+}
+
+// MARK: - UI programmaticaly changes
+extension ProfileVC {
     
-    // NEXT -> UI CHANGES
+    // MARK: - Custom UI Drawings
     func layout() {
         let newImageButtonCornerRadius = newImageButton.frame.height / 2.0
         newImageButton.layer.cornerRadius = newImageButtonCornerRadius
@@ -69,6 +73,7 @@ class ProfileVC: UIViewController {
         activityIndicator.startAnimating()
     }
     
+    // MARK: - UIButton state changes
     func enableButtons() {
         saveButton.isEnabled = true
     }
@@ -78,7 +83,7 @@ class ProfileVC: UIViewController {
     
 }
 
-// SAVING DATA STAFF
+// MARK: - DataManagerDelegate - save/restore operations results
 extension ProfileVC: IDataManagerDelegate {
     func didRestore(_ dataManager: IDataManager, restored: IProfileManager?) {
         activityIndicator.stopAnimating()
@@ -123,24 +128,35 @@ extension ProfileVC: IDataManagerDelegate {
 }
 
 
-// IMAGE PICKING STAFF
+// MARK: - Image Picker View Delegate
 extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBAction func onNewImageButton(_ sender: UIButton) {
         let optionsAlertVC = UIAlertController(title: "Выбери изображение профиля", message: nil, preferredStyle: .actionSheet)
         
-        let fromGallery: (_: UIAlertAction) -> Void = { _ in
+        typealias AlertActionHandler = (_: UIAlertAction) -> Void
+        
+        let fromGalleryHandler: AlertActionHandler = { _ in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }
-        optionsAlertVC.addAction(UIAlertAction(title: "Галерея", style: .default, handler: fromGallery))
+        optionsAlertVC.addAction(UIAlertAction(title: "Галерея", style: .default, handler: fromGalleryHandler))
         
-        let fromCamera: (_: UIAlertAction) -> Void = { _ in
+        let fromCameraHandler: AlertActionHandler = { _ in
             self.imagePicker.sourceType = .camera
             self.present(self.imagePicker, animated: true, completion: nil)
         }
-        optionsAlertVC.addAction(UIAlertAction(title: "Новое фото", style: .default, handler: fromCamera))
+        optionsAlertVC.addAction(UIAlertAction(title: "Новое фото", style: .default, handler: fromCameraHandler))
         // видимо в ios11 баг - иногда не появляется navigation bar при выборе галереи.
         // пока что extension это исправляет (иногда cancel прыгает)
+        
+        let fromInternetHandler: AlertActionHandler = { [weak self] _ in
+            guard let imageSearchVC = self?.storyboard?.instantiateViewController(withIdentifier: "imageSearchVC") as? ProfileImageSearchVC else {
+                return
+            }
+            imageSearchVC.delegate = self
+            self?.present(imageSearchVC, animated: true, completion: nil)
+        }
+        optionsAlertVC.addAction(UIAlertAction(title: "Загрузить", style: .default, handler: fromInternetHandler))
         
         optionsAlertVC.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         present(optionsAlertVC, animated: true, completion: nil)
@@ -157,8 +173,15 @@ extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDele
     }
 }
 
+// MARK: - ImageSearchVC - from internet - delegate
+extension ProfileVC: ImageSearchVCDelegate {
+    func didPick(image: UIImage) {
+        profileImageView.image = image
+    }
+}
 
-// TEXT INPUT STUFF
+
+// MARK: - Helper Functions to dismiss keyboard
 extension ProfileVC: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
