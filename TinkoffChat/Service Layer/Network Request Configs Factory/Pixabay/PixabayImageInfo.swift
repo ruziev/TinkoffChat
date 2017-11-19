@@ -12,7 +12,7 @@ import SwiftyJSON
 class PixabayImageInfoRequest : IRequest {
     var urlRequest: URLRequest?
     
-    init(apiKey: String, keywords: [String]) {
+    init(apiKey: String, keywords: [String], page: Int = 1) {
         let whitespaces = NSCharacterSet.whitespaces
         
         for keyword in keywords {
@@ -24,7 +24,7 @@ class PixabayImageInfoRequest : IRequest {
         
         let keywordsJoined = keywords.joined(separator: "+")
         
-        guard let url = URL(string: "https://pixabay.com/api/?key=\(apiKey)&q=\(keywordsJoined)&image_type=photo") else {
+        guard let url = URL(string: "https://pixabay.com/api/?key=\(apiKey)&q=\(keywordsJoined)&image_type=photo&page=\(page)") else {
             print("Could not create URL")
             assert(false)
         }

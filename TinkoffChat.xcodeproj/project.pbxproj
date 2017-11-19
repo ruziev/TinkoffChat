@@ -43,6 +43,7 @@
 		99CD4F1B1FC0C7D500B27DF8 /* PixabayImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CD4F1A1FC0C7D500B27DF8 /* PixabayImageInfo.swift */; };
 		99CD4F1D1FC0DB6500B27DF8 /* ProfileImageSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CD4F1C1FC0DB6500B27DF8 /* ProfileImageSearchVC.swift */; };
 		99CD4F1F1FC0E7E600B27DF8 /* PixabayImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CD4F1E1FC0E7E600B27DF8 /* PixabayImage.swift */; };
+		99CD4F211FC18B8800B27DF8 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CD4F201FC18B8800B27DF8 /* ImageCollectionViewCell.swift */; };
 		99D3350F1FBB0E5C0058DB16 /* ConversationsDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D3350E1FBB0E5C0058DB16 /* ConversationsDataProvider.swift */; };
 		99D335111FBB296B0058DB16 /* MessagesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D335101FBB296B0058DB16 /* MessagesDataProvider.swift */; };
 		99E029731FB618B500DA2644 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E029721FB618B500DA2644 /* Message.swift */; };
@@ -97,6 +98,7 @@
 		99CD4F1A1FC0C7D500B27DF8 /* PixabayImageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixabayImageInfo.swift; sourceTree = "<group>"; };
 		99CD4F1C1FC0DB6500B27DF8 /* ProfileImageSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileImageSearchVC.swift; path = "TinkoffChat/Presentation Layer/View Controller/ProfileImageSearchVC.swift"; sourceTree = SOURCE_ROOT; };
 		99CD4F1E1FC0E7E600B27DF8 /* PixabayImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixabayImage.swift; sourceTree = "<group>"; };
+		99CD4F201FC18B8800B27DF8 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageCollectionViewCell.swift; path = "TinkoffChat/Presentation Layer/View/ImageCollectionViewCell.swift"; sourceTree = SOURCE_ROOT; };
 		99D3350E1FBB0E5C0058DB16 /* ConversationsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsDataProvider.swift; sourceTree = "<group>"; };
 		99D335101FBB296B0058DB16 /* MessagesDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesDataProvider.swift; sourceTree = "<group>"; };
 		99E029721FB618B500DA2644 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		999852541F8A896300A46BC1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				99CD4F201FC18B8800B27DF8 /* ImageCollectionViewCell.swift */,
 				99361CC61FA89DE600F6ECE6 /* IMessageCell.swift */,
 				999852471F89A35200A46BC1 /* MessageCell.swift */,
 				99E522061F8968B700417A9A /* ConversationCell.swift */,
@@ -459,10 +462,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TinkoffChat/Pods-TinkoffChat-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BMACollectionBatchUpdates/BMACollectionBatchUpdates.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BMACollectionBatchUpdates.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,6 +539,7 @@
 				999C3C6C1F98DF8100785038 /* IDataManagerDelegate.swift in Sources */,
 				99361CC91FA89E6E00F6ECE6 /* MessageDisplayModel.swift in Sources */,
 				99C76C431F741F1500E61DAB /* AppDelegate.swift in Sources */,
+				99CD4F211FC18B8800B27DF8 /* ImageCollectionViewCell.swift in Sources */,
 				9994C3F31FAFAA570056CA37 /* AppUser.swift in Sources */,
 				99CD4F1D1FC0DB6500B27DF8 /* ProfileImageSearchVC.swift in Sources */,
 				99D3350F1FBB0E5C0058DB16 /* ConversationsDataProvider.swift in Sources */,
