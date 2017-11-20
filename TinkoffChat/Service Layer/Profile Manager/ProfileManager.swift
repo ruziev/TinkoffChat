@@ -11,7 +11,11 @@ import UIKit
 class ProfileManager : IProfileManager {
     weak var delegate: IDataManagerDelegate?
     var appUser: AppUser?
-    var storageManager: IStorageManager = StorageManager()
+    var storageManager: IStorageManager! {
+        didSet {
+            storageManager.delegate = self
+        }
+    }
     
     var image: UIImage? {
         if let data = appUser?.user?.image {
@@ -25,10 +29,6 @@ class ProfileManager : IProfileManager {
     }
     var info: String? {
         return appUser?.user?.info
-    }
-    
-    init() {
-        storageManager.delegate = self
     }
     
     func update(name: String? = nil, info: String? = nil, image: UIImage? = nil) -> Bool {

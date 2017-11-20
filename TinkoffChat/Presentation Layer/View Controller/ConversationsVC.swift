@@ -10,15 +10,19 @@ import UIKit
 import CoreData
 
 class ConversationsVC: UIViewController {
-    @IBOutlet weak var conversationsTableView: UITableView!
-    var communicationManager: ICommunicationManager = CommunicationManager()
-    var profileManager: IProfileManager = ProfileManager()
+    
+    // MARK: - Dependencies
+    var communicationManager: ICommunicationManager!
+    var profileManager: IProfileManager!
     var dataProvider: ConversationsDataProvider?
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var conversationsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataProvider = ConversationsDataProvider(tableView: conversationsTableView)
+        dataProvider?.register(tableView: conversationsTableView)
         profileManager.delegate = self
         profileManager.restore()
         
@@ -103,7 +107,10 @@ extension ConversationsVC: UITableViewDelegate {
             guard let indexPath = sender as? IndexPath, let conversation = dataProvider?.fetchedResultsController.object(at: indexPath) else {
                 fatalError("Wrong indexPath selected or sender is not of type IndexPath!")
             }
+            // MARK: - Inject dependencies
             let destinationVC = segue.destination as! ConversationVC
+            destinationVC.dataProvider = MessagesDataProvider()
+            destinationVC.dataProvider?.context = dataProvider?.context
             destinationVC.conversationId = conversation.conversationId
             destinationVC.title = conversation.user?.name
             destinationVC.communicationManager = communicationManager

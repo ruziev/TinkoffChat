@@ -10,7 +10,7 @@ import UIKit
 
 class StorageManager: IStorageManager {
     weak var delegate: IStorageManagerDelegate?
-    var coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack
+    var coreDataStack: CoreDataStack!
     
     func save(_ appUser: AppUser) {
         guard let saveContext = coreDataStack.saveContext else {

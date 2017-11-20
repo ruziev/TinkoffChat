@@ -9,7 +9,7 @@
 import UIKit
 
 class CommunicationManager: ICommunicationManager, ICommunicatorDelegate {
-    var coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack
+    var coreDataStack: CoreDataStack!
     
     var displayedUsername: String {
         didSet {

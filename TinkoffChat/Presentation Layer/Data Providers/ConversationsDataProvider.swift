@@ -9,14 +9,12 @@ import UIKit
 import CoreData
 
 class ConversationsDataProvider: NSObject {
-    let fetchedResultsController: NSFetchedResultsController<Conversation>
-    let tableView: UITableView
+    var fetchedResultsController: NSFetchedResultsController<Conversation>!
+    var tableView: UITableView!
+    var context: NSManagedObjectContext!
     
-    init(tableView: UITableView) {
+    func register(tableView: UITableView) {
         self.tableView = tableView
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.mainContext else {
-            fatalError("Error initializing main context of CoreDataStack in ConversationsFRC")
-        }
         let fetchRequest: NSFetchRequest<Conversation> = Conversation.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "online", ascending: false),
@@ -24,7 +22,6 @@ class ConversationsDataProvider: NSObject {
             NSSortDescriptor(key: "user.name", ascending: true)
         ]
         fetchedResultsController = NSFetchedResultsController<Conversation>(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: #keyPath(Conversation.online), cacheName: nil)
-        super.init()
         fetchedResultsController.delegate = self
         
         startUpdating()

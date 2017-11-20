@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AppUser" representedClassName="AppUser" syncable="YES" codeGenerationType="class">
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="appUser" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -27,11 +27,6 @@
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
     </entity>
     <fetchRequest name="AppUser" entity="AppUser"/>
-    <fetchRequest name="ConversationFromId" entity="Conversation" predicateString="conversationId == &quot;@conversationId&quot;"/>
-    <fetchRequest name="MessagesFromConversationId" entity="Message" predicateString="conversation.conversationId == @conversationId"/>
-    <fetchRequest name="NonEmptyOnlineConversations" entity="Conversation" predicateString="messages.@count != 0 AND online == 1"/>
-    <fetchRequest name="OnlineConversations" entity="Conversation" predicateString="online == 1"/>
-    <fetchRequest name="UserFromId" entity="User" predicateString="userId == &quot;@userId&quot;"/>
     <elements>
         <element name="AppUser" positionX="295" positionY="86" width="128" height="58"/>
         <element name="Conversation" positionX="207" positionY="209" width="128" height="135"/>

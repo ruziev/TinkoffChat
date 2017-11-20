@@ -22,7 +22,7 @@ class ConversationVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataProvider = MessagesDataProvider(tableView: messagesTableView, conversationId: conversationId)
+        dataProvider?.register(tableView: messagesTableView, conversationId: conversationId)
         messagesTableView.dataSource = self
         messagesTableView.delegate = self
         addObserversForKeyboardAppearance()

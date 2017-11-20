@@ -10,21 +10,18 @@ import UIKit
 import CoreData
 
 class MessagesDataProvider: NSObject {
-    let fetchedResultsController: NSFetchedResultsController<Message>
-    let tableView: UITableView
+    var fetchedResultsController: NSFetchedResultsController<Message>!
+    var tableView: UITableView!
+    var context: NSManagedObjectContext!
     
-    init(tableView: UITableView, conversationId: String) {
+    func register(tableView: UITableView, conversationId: String) {
         self.tableView = tableView
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.mainContext else {
-            fatalError("Error initializing main context of CoreDataStack in MessagesFRC")
-        }
         let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "conversation.conversationId == %@", conversationId)
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "date", ascending: true)
         ]
         fetchedResultsController = NSFetchedResultsController<Message>(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        super.init()
         fetchedResultsController.delegate = self
         
         startUpdating()

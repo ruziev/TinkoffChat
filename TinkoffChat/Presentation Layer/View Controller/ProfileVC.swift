@@ -177,6 +177,7 @@ extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDele
 extension ProfileVC: ImageSearchVCDelegate {
     func didPick(image: UIImage) {
         profileImageView.image = image
+        inputDataChanged = true
     }
 }
 

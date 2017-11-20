@@ -26,7 +26,7 @@ class PixabayImageInfoRequest : IRequest {
         
         guard let url = URL(string: "https://pixabay.com/api/?key=\(apiKey)&q=\(keywordsJoined)&image_type=photo&page=\(page)") else {
             print("Could not create URL")
-            assert(false)
+            return
         }
         urlRequest = URLRequest(url: url)
     }
