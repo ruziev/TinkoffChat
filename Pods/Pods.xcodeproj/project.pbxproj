@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -45,32 +45,32 @@
 /* Begin PBXFileReference section */
 		18131656B3AC7FC884FC1FE466054E8F /* Pods-TinkoffChat-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TinkoffChat-dummy.m"; sourceTree = "<group>"; };
 		26087362F5EB05DF12E1C76E6F2398AF /* Pods-TinkoffChat-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TinkoffChat-acknowledgements.plist"; sourceTree = "<group>"; };
-		31DD9921734340BEF24C3D289BDC6669 /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
+		31DD9921734340BEF24C3D289BDC6669 /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
 		347721FC602772D2FC1B3EADB0A2CA09 /* BMACollectionUpdates.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BMACollectionUpdates.m; path = BMACollectionBatchUpdates/BMACollectionUpdates.m; sourceTree = "<group>"; };
 		3FD58E0DD29EA064A90BD9D9FAA8B882 /* UICollectionView+BMABatchUpdates.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UICollectionView+BMABatchUpdates.m"; path = "BMACollectionBatchUpdates/UICollectionView+BMABatchUpdates.m"; sourceTree = "<group>"; };
 		40A736149FAB30D4AC3F28E4830AF53E /* BMACollectionBatchUpdates.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BMACollectionBatchUpdates.xcconfig; sourceTree = "<group>"; };
-		4C2AC718F919022DBB2BAFF842AE8408 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyJSON.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C2AC718F919022DBB2BAFF842AE8408 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		515C97C68285C4BAD6C569DA3B438096 /* SwiftyJSON.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Source/SwiftyJSON.swift; sourceTree = "<group>"; };
 		5A0B05D035559BADD8A3301BEB44C1A4 /* SwiftyJSON-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-prefix.pch"; sourceTree = "<group>"; };
 		65D3B4E879A57A3B0C1E1574FD441E6D /* SwiftyJSON.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyJSON.xcconfig; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		694BFCA650E4981F5A5C47B3A9670F66 /* UITableView+BMABatchUpdates.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UITableView+BMABatchUpdates.h"; path = "BMACollectionBatchUpdates/UITableView+BMABatchUpdates.h"; sourceTree = "<group>"; };
 		6A50011F8A666EDFE5CCACF242CE3CEC /* Pods-TinkoffChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TinkoffChat.release.xcconfig"; sourceTree = "<group>"; };
-		6DE5123D1D24C939FDA85652BB2CE6A2 /* BMACollectionBatchUpdates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BMACollectionBatchUpdates.framework; path = BMACollectionBatchUpdates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		87BC94FABC24A3DD8A2ECF32DC7B1D68 /* Pods_TinkoffChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TinkoffChat.framework; path = "Pods-TinkoffChat.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DE5123D1D24C939FDA85652BB2CE6A2 /* BMACollectionBatchUpdates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMACollectionBatchUpdates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		87BC94FABC24A3DD8A2ECF32DC7B1D68 /* Pods_TinkoffChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinkoffChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B79E46F627FD7C67459CBC65C3FC439 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A4C9629864D3987EACC87FD0471D0514 /* SwiftyJSON-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyJSON-dummy.m"; sourceTree = "<group>"; };
 		AF58AAE23629465D1B99556255DD1880 /* BMACollectionBatchUpdates-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BMACollectionBatchUpdates-umbrella.h"; sourceTree = "<group>"; };
 		AF6396AB6BCE999568286D33E5B74C38 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5C9F1ECB1C81B9CB1C8FA24F7BB91F5 /* Pods-TinkoffChat-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TinkoffChat-umbrella.h"; sourceTree = "<group>"; };
 		B9BFEC5B782D752E7CE2806D33653F06 /* Pods-TinkoffChat-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TinkoffChat-acknowledgements.markdown"; sourceTree = "<group>"; };
-		BBCDE0C04B1501BB790EF35D5768B8E3 /* BMACollectionBatchUpdates.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = BMACollectionBatchUpdates.modulemap; sourceTree = "<group>"; };
+		BBCDE0C04B1501BB790EF35D5768B8E3 /* BMACollectionBatchUpdates.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = BMACollectionBatchUpdates.modulemap; sourceTree = "<group>"; };
 		BBE15CEC2A4313DA4EDA4D42353C7304 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4B2E6EA448DFD329AB3C03FB83CBFB6 /* SwiftyJSON-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-umbrella.h"; sourceTree = "<group>"; };
 		CA0923AA05968CCBB5C58D0BD1F0DDC9 /* Pods-TinkoffChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TinkoffChat.debug.xcconfig"; sourceTree = "<group>"; };
 		D296A06D05A1DCBF6A2F213569FD4D86 /* BMACollectionBatchUpdates-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BMACollectionBatchUpdates-dummy.m"; sourceTree = "<group>"; };
-		DFA0D706BFD5C70766F46E9036A787D8 /* Pods-TinkoffChat.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-TinkoffChat.modulemap"; sourceTree = "<group>"; };
+		DFA0D706BFD5C70766F46E9036A787D8 /* Pods-TinkoffChat.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-TinkoffChat.modulemap"; sourceTree = "<group>"; };
 		E26217BBDE12600749B07AF3B1A44CBB /* Pods-TinkoffChat-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TinkoffChat-resources.sh"; sourceTree = "<group>"; };
 		E5923A0734A314610FB169A462D24B55 /* UITableView+BMABatchUpdates.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UITableView+BMABatchUpdates.m"; path = "BMACollectionBatchUpdates/UITableView+BMABatchUpdates.m"; sourceTree = "<group>"; };
 		E775F21103E5AF303A02FDAD95AAA485 /* BMACollectionUpdates.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BMACollectionUpdates.h; path = BMACollectionBatchUpdates/BMACollectionUpdates.h; sourceTree = "<group>"; };
@@ -118,7 +118,6 @@
 				E5923A0734A314610FB169A462D24B55 /* UITableView+BMABatchUpdates.m */,
 				51E1D151A284F9D12CD3E96392EE3B90 /* Support Files */,
 			);
-			name = BMACollectionBatchUpdates;
 			path = BMACollectionBatchUpdates;
 			sourceTree = "<group>";
 		};
@@ -142,7 +141,6 @@
 				515C97C68285C4BAD6C569DA3B438096 /* SwiftyJSON.swift */,
 				CD78A0E8C52F1B9C21D2989721F08522 /* Support Files */,
 			);
-			name = SwiftyJSON;
 			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
@@ -325,7 +323,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0910;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -444,6 +442,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
