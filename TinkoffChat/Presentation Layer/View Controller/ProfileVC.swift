@@ -20,6 +20,9 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     let imagePicker = UIImagePickerController()
     
+    // MARK: - Emitter Animator
+    lazy var emitterAnimator = Emitter(image: #imageLiteral(resourceName: "tinkoff-logo"), view: view)
+    
     var inputDataChanged: Bool = false {
         didSet {
             if inputDataChanged && !processingDataManager {
@@ -51,6 +54,8 @@ class ProfileVC: UIViewController {
         addObserversForKeyboardAppearance()
         
         layout()
+        
+        emitterAnimator.setUpGestureRecognizer()
     }
     
     // CLOSE THIS MODAL SCREEN

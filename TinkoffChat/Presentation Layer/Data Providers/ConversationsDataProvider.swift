@@ -38,10 +38,12 @@ class ConversationsDataProvider: NSObject {
 
 extension ConversationsDataProvider: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // i have custom cell animations further, so this line would bother me
         tableView.beginUpdates()
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // i have custom cell animations further, so this line would bother me
         tableView.endUpdates()
     }
     

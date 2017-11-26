@@ -11,6 +11,8 @@ import UIKit
 class ConversationVC: UIViewController {
     var conversationId: String!
     
+    var textAvailable = false
+    
     @IBOutlet weak var messagesTableView: UITableView!
     var communicationManager: ICommunicationManager!
     
@@ -19,13 +21,24 @@ class ConversationVC: UIViewController {
     
     var dataProvider: MessagesDataProvider?
     
+    // MARK: - Emitter Animator
+    lazy var emitterAnimator = Emitter(image: #imageLiteral(resourceName: "tinkoff-logo"), view: view)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dataProvider?.register(tableView: messagesTableView, conversationId: conversationId)
+        dataProvider?.delegate = self
+        dataProvider?.startUpdating()
+        
         messagesTableView.dataSource = self
         messagesTableView.delegate = self
+        
+        textView.delegate = self
+        
         addObserversForKeyboardAppearance()
+        
+        emitterAnimator.setUpGestureRecognizer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,6 +60,9 @@ class ConversationVC: UIViewController {
                 self?.textView.text = ""
                 self?.textView.resignFirstResponder()
                 self?.messagesTableView.scrollToBottom(animated: false)
+                if self != nil {
+                    self!.textViewDidChange(self!.textView)
+                }
             } else if let error = error {
                 let alertVC = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -98,6 +114,40 @@ extension ConversationVC: UITableViewDelegate {
         let messageDisplayModel = MessageDisplayModel(text: text, date: date, type: message.isIncoming ? .incoming : .outgoing)
         messageCell.layoutIfNeeded()
         messageDisplayModel.layoutCell(cell: messageCell)
+    }
+}
+
+extension ConversationVC: MessagesDataProviderDelegate {
+    func conversationStatusDidChange(online: Bool) {
+        if online && textAvailable {
+            if self.sendButton.isEnabled { return }
+            UIView.transition(with: sendButton, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                self.sendButton.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+                self.sendButton.setTitleColor(UIColor.red, for: .normal)
+                self.sendButton.isEnabled = true
+            }, completion: { (completed) in
+                self.sendButton.transform = CGAffineTransform.identity
+            })
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.sendButton.isEnabled = false
+                self.sendButton.setTitleColor(UIColor.lightGray, for: .normal)
+            })
+        }
+    }
+}
+
+extension ConversationVC: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let text = textView.text!
+        /// validating message
+        if !text.trimmingCharacters(in: .whitespaces).isEmpty {
+            // string contains only whitespace characters
+            textAvailable = true
+        } else {
+            textAvailable = false
+        }
+        dataProvider?.tellConversationStatus()
     }
 }
 

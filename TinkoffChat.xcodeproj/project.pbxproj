@@ -52,6 +52,7 @@
 		99E522031F8964AC00417A9A /* ConversationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E522021F8964AC00417A9A /* ConversationsVC.swift */; };
 		99E522051F89682000417A9A /* ConversationDisplayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E522041F89682000417A9A /* ConversationDisplayModel.swift */; };
 		99E522071F8968B700417A9A /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E522061F8968B700417A9A /* ConversationCell.swift */; };
+		99EB53061FCB6F20005C1AFD /* Emitter Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EB53051FCB6F20005C1AFD /* Emitter Animator.swift */; };
 		99FB1BE11FA7C1E0004195F7 /* IProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FB1BE01FA7C1E0004195F7 /* IProfileManager.swift */; };
 		99FB1BE61FA7D90A004195F7 /* ICommunicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FB1BE51FA7D90A004195F7 /* ICommunicationManager.swift */; };
 		B3DF34861D3E43CD5153AB92 /* Pods_TinkoffChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684599265262BD28772C9538 /* Pods_TinkoffChat.framework */; };
@@ -107,6 +108,7 @@
 		99E522021F8964AC00417A9A /* ConversationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsVC.swift; sourceTree = "<group>"; };
 		99E522041F89682000417A9A /* ConversationDisplayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationDisplayModel.swift; sourceTree = "<group>"; };
 		99E522061F8968B700417A9A /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		99EB53051FCB6F20005C1AFD /* Emitter Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emitter Animator.swift"; sourceTree = "<group>"; };
 		99FB1BE01FA7C1E0004195F7 /* IProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IProfileManager.swift; sourceTree = "<group>"; };
 		99FB1BE51FA7D90A004195F7 /* ICommunicationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICommunicationManager.swift; sourceTree = "<group>"; };
 		C71165717FE3AF180A163FFE /* Pods-TinkoffChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-TinkoffChat/Pods-TinkoffChat.release.xcconfig"; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				996A10891F7E996700EBDFD7 /* UIImagePickerController.swift */,
 				9998524B1F8A5EF700A46BC1 /* UIColor.swift */,
 				99A7E36F1FA78B2300624BC6 /* UIViewController.swift */,
+				99EB53051FCB6F20005C1AFD /* Emitter Animator.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				99361CC71FA89DE600F6ECE6 /* IMessageCell.swift in Sources */,
 				99CD4F1F1FC0E7E600B27DF8 /* PixabayImage.swift in Sources */,
 				99CD4F1B1FC0C7D500B27DF8 /* PixabayImageInfo.swift in Sources */,
+				99EB53061FCB6F20005C1AFD /* Emitter Animator.swift in Sources */,
 				993BAE4F1F9C0DA100484E3E /* UITableView.swift in Sources */,
 				995846C31F899829000AA128 /* ConversationVC.swift in Sources */,
 				999852481F89A35200A46BC1 /* MessageCell.swift in Sources */,

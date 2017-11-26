@@ -19,6 +19,9 @@ class ConversationsVC: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var conversationsTableView: UITableView!
     
+    // MARK: - Emitter Animator
+    lazy var emitterAnimator = Emitter(image: #imageLiteral(resourceName: "tinkoff-logo"), view: view)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +31,8 @@ class ConversationsVC: UIViewController {
         
         conversationsTableView.dataSource = self
         conversationsTableView.delegate = self
+        
+        emitterAnimator.setUpGestureRecognizer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +101,17 @@ extension ConversationsVC: UITableViewDataSource {
 }
 
 extension ConversationsVC: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        guard let cell = cell as? ConversationCell else { return }
+//
+//        UIView.transition(with: cell.nameLabel, duration: 1.0, options: .transitionCrossDissolve, animations: {
+//            if cell.backgroundColor != .white {
+//                cell.nameLabel.textColor = .green
+//            }
+//        }, completion: nil)
+//
+//    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "fromConversationsListToConversation", sender: indexPath)
         let selectedCell = tableView.cellForRow(at: indexPath)
